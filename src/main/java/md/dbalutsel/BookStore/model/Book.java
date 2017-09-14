@@ -17,7 +17,7 @@ public class Book {
 
     @Column(name = "name", columnDefinition = "char(30)")
     @Length(max = 30)
-    @NotEmpty(message = "Name shouldn't be null!")
+    @NotEmpty(message = "Name shouldn't be empty!")
     private String name;
 
     @Column(name = "author", columnDefinition = "char(30)")
