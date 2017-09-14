@@ -10,28 +10,34 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.ConstraintViolationException;
 
 @RestController
-@RequestMapping(value = "/api", method = RequestMethod.POST)
-public class ApiController {
+public class BookStoreController {
 
     private final BookRepository bookRepository;
 
     @Autowired
-    public ApiController(BookRepository bookRepository) {
+    public BookStoreController(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
     }
 
-    @GetMapping("/getbooks")
-    public Iterable<Book> getBooks() {
-        return bookRepository.findAll();
+    @GetMapping("/books")
+    public ResponseEntity<Iterable<Book>> getAllBooks() {
+        return new ResponseEntity<>(bookRepository.findAll(),HttpStatus.OK);
     }
 
-    @GetMapping("/addbook")
-    public ResponseEntity<?> addBook(@RequestBody Book book) {
-        if (book != null) {
-            bookRepository.save(book);
+    @GetMapping("/books/{id}")
+    public ResponseEntity<Book> getBookById(@PathVariable(name = "id") int id) {
+        Book book = bookRepository.findOne(id);
+        if (book!=null) {
+            return new ResponseEntity<>(book,HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
 
-        return new ResponseEntity<>(book, HttpStatus.OK);
+    @PostMapping("/books")
+    public ResponseEntity<?> addBook(@RequestBody Book book) {
+        bookRepository.save(book);
+        return new ResponseEntity<>(book, HttpStatus.CREATED);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)

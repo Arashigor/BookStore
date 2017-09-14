@@ -8,7 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "books")
+@Table(schema = "bookstore", name = "books")
 public class Book {
 
     @Id
@@ -29,6 +29,10 @@ public class Book {
     @Range(max = 2050)
     @NotNull(message = "Year shouldn't be null!")
     private Integer year;
+
+    @Column(name = "genre")
+    @NotNull(message = "")
+    private String genre;
 
     public Book() {
     }
@@ -63,5 +67,24 @@ public class Book {
 
     public void setYear(Integer year) {
         this.year = year;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", author='" + author + '\'' +
+                ", year=" + year +
+                ", genre='" + genre + '\'' +
+                '}';
     }
 }
