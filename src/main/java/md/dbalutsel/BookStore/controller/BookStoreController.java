@@ -1,8 +1,8 @@
 package md.dbalutsel.BookStore.controller;
 
-import md.dbalutsel.BookStore.dao.BookDaoImpl;
 import md.dbalutsel.BookStore.model.Book;
 import md.dbalutsel.BookStore.model.ConstraintViolationExceptionResponse;
+import md.dbalutsel.BookStore.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,16 +13,21 @@ import javax.validation.ConstraintViolationException;
 public class BookStoreController {
 
     @Autowired
-    private BookDaoImpl bookDao;
+    private BookService bookService;
 
     @GetMapping("/books")
     public ResponseEntity<Iterable<Book>> getAllBooks() {
-        return new ResponseEntity<>(bookDao.findAll(),HttpStatus.OK);
+        return new ResponseEntity<>(bookService.findAll(),HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/books",params = "author")
+    public ResponseEntity<Iterable<Book>> getAllBooksByAuthor(@RequestParam("author") String author) {
+        return new ResponseEntity<>(bookService.findByAuthor(author), HttpStatus.OK);
     }
 
     @GetMapping("/books/{id}")
     public ResponseEntity<Book> getBookById(@PathVariable(name = "id") Long id) {
-        Book book = bookDao.findById(id);
+        Book book = bookService.findById(id);
         if (book!=null) {
             return new ResponseEntity<>(book,HttpStatus.OK);
         } else {
@@ -32,7 +37,7 @@ public class BookStoreController {
 
     @PostMapping("/books")
     public ResponseEntity<?> addBook(@RequestBody Book book) {
-        bookDao.save(book);
+        bookService.save(book);
         return new ResponseEntity<>(book, HttpStatus.CREATED);
     }
 

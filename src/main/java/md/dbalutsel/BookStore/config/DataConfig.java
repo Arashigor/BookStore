@@ -1,5 +1,6 @@
 package md.dbalutsel.BookStore.config;
 
+import md.dbalutsel.BookStore.dao.BookDao;
 import md.dbalutsel.BookStore.dao.BookDaoImpl;
 import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,7 @@ public class DataConfig {
     }
 
     @Bean
-    public BookDaoImpl bookDao() {
+    public BookDao bookDao() {
         return new BookDaoImpl();
     }
 }

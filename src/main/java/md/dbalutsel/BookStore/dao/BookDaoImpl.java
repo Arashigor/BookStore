@@ -37,22 +37,27 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public Book findByName(String name) {
+    public List<Book> findByName(String name) {
+       return null;
+    }
+
+    @Override
+    public List<Book> findByAuthor(String author) {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        List<Book> booksList = session.createQuery("from Book where author = :author",Book.class)
+                .setParameter("author", author).getResultList();
+        session.getTransaction().commit();
+        return booksList;
+    }
+
+    @Override
+    public List<Book> findByGenre(String name) {
         return null;
     }
 
     @Override
-    public Book findByAuthor(String name) {
-        return null;
-    }
-
-    @Override
-    public Book findByGenre(String name) {
-        return null;
-    }
-
-    @Override
-    public Book findByYear(Integer year) {
+    public List<Book> findByYear(Integer year) {
         return null;
     }
 }

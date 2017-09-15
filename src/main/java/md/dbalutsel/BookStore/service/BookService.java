@@ -1,10 +1,10 @@
-package md.dbalutsel.BookStore.dao;
+package md.dbalutsel.BookStore.service;
 
 import md.dbalutsel.BookStore.model.Book;
 
 import java.util.List;
 
-public interface BookDao {
+public interface BookService {
     List<Book> findAll();
     Book findById(Long id);
     void save(Book book);
