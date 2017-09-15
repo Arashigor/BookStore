@@ -53,6 +53,6 @@ public class BookFieldsValidationTest {
         book.setAuthor(ALLOWED_AUTHOR);
         book.setGenre(ALLOWED_GENRE);
         Set<ConstraintViolation<Book>> violations = validator.validate(book);
-        assertThat("All length and range constraints are violated!", violations, hasSize(0));
+        assertThat("Passed all validations!", violations, hasSize(0));
     }
 }
