@@ -2,6 +2,7 @@ package md.dbalutsel.BookStore.validator;
 
 import md.dbalutsel.BookStore.config.TestConfig;
 import md.dbalutsel.BookStore.model.Book;
+import md.dbalutsel.BookStore.model.BookGenres;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import javax.validation.ConstraintViolation;
 import java.util.Set;
-import java.util.logging.Logger;
 
 import static md.dbalutsel.BookStore.data.Data.*;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -41,7 +41,6 @@ public class BookFieldsValidationTest {
         book.setName(STRING_WITH_40_CHARS);
         book.setAuthor(STRING_WITH_40_CHARS);
         book.setYear(WRONG_YEAR_VALUE);
-        book.setGenre(NOT_ALLOWED_GENRE);
         Set<ConstraintViolation<Book>> violations = validator.validate(book);
         assertThat("All length and range constraints are violated!", violations, hasSize(4));
     }
@@ -51,7 +50,7 @@ public class BookFieldsValidationTest {
         book.setName(ALLOWED_NAME);
         book.setYear(ALLOWED_YEAR);
         book.setAuthor(ALLOWED_AUTHOR);
-        book.setGenre(ALLOWED_GENRE);
+        book.setGenre(Enum.valueOf(BookGenres.class, ALLOWED_GENRE));
         Set<ConstraintViolation<Book>> violations = validator.validate(book);
         assertThat("Passed all validations!", violations, hasSize(0));
     }

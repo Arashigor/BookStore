@@ -1,6 +1,5 @@
 package md.dbalutsel.BookStore.model;
 
-import md.dbalutsel.BookStore.validator.AllowedGenre;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;
@@ -33,10 +32,10 @@ public class Book {
     @NotNull(message = "{category.year.NotNull}")
     private Integer year;
 
-    @Column(name = "genre", columnDefinition = "char(30)")
-    @AllowedGenre(value = {"SCIENCE", "FICTION", "EDUCATION", "HISTORY", "FANTASY"})
+    @Column(name = "genre", columnDefinition = "book_genre")
+    @Enumerated(EnumType.STRING)
     @NotNull(message = "{category.genre.NotNull}")
-    private String genre;
+    private BookGenres genre;
 
     public Book() {
     }
@@ -73,11 +72,11 @@ public class Book {
         this.year = year;
     }
 
-    public String getGenre() {
+    public BookGenres getGenre() {
         return genre;
     }
 
-    public void setGenre(String genre) {
+    public void setGenre(BookGenres genre) {
         this.genre = genre;
     }
 
