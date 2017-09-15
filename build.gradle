@@ -28,12 +28,15 @@ repositories {
 }
 
 dependencies {
-	compile 'org.springframework:spring-orm'
-	compile group: 'org.hibernate', name: 'hibernate-gradle-plugin', version: '5.2.11.Final'
 	compile('org.springframework.boot:spring-boot-starter-web')
+
+	compile 'org.springframework:spring-orm:4.2.5.RELEASE'
+	compile 'org.hibernate:hibernate-core:5.2.1.Final'
 	compile 'org.apache.tomcat:tomcat-dbcp:8.0.32'
+
 	runtime('org.springframework.boot:spring-boot-devtools')
 	runtime('org.postgresql:postgresql')
+
 	testCompile group: 'org.mockito', name: 'mockito-all', version: '1.9.5'
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
