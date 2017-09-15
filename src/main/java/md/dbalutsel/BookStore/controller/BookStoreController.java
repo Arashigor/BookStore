@@ -25,7 +25,7 @@ public class BookStoreController {
     }
 
     @GetMapping("/books/{id}")
-    public ResponseEntity<Book> getBookById(@PathVariable(name = "id") int id) {
+    public ResponseEntity<Book> getBookById(@PathVariable(name = "id") Long id) {
         Book book = bookRepository.findOne(id);
         if (book!=null) {
             return new ResponseEntity<>(book,HttpStatus.OK);

@@ -1,5 +1,6 @@
 package md.dbalutsel.BookStore.model;
 
+import md.dbalutsel.BookStore.validator.AllowedGenre;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;
@@ -13,35 +14,38 @@ public class Book {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(name = "name", columnDefinition = "char(30)")
-    @Length(max = 30)
-    @NotEmpty(message = "Name shouldn't be empty!")
+    @Length(max = 30, message = "{category.name.Length}")
+    @NotEmpty(message = "{category.name.NotEmpty}")
+    @NotNull(message = "{category.name.NotNull}")
     private String name;
 
     @Column(name = "author", columnDefinition = "char(30)")
-    @Length(max = 30)
-    @NotEmpty(message = "Author shouldn't be empty!")
+    @Length(max = 30, message = "{category.author.Length}")
+    @NotEmpty(message = "{category.author.NotEmpty}")
+    @NotNull(message = "{category.author.NotNull}")
     private String author;
 
     @Column(name = "year")
-    @Range(max = 2050)
-    @NotNull(message = "Year shouldn't be null!")
+    @Range(max = 2050, message = "{category.year.Range}")
+    @NotNull(message = "{category.year.NotNull}")
     private Integer year;
 
-    @Column(name = "genre")
-    @NotNull(message = "")
+    @Column(name = "genre", columnDefinition = "char(30)")
+    @AllowedGenre(value = {"SCIENCE", "FICTION", "EDUCATION", "HISTORY", "FANTASY"})
+    @NotNull(message = "{category.genre.NotNull}")
     private String genre;
 
     public Book() {
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
