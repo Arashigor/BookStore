@@ -1,11 +1,14 @@
 package md.dbalutsel.BookStore.dao;
 
 import md.dbalutsel.BookStore.model.Book;
+
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Optional;
 
 public class BookDaoImpl implements BookDao {
 
@@ -16,29 +19,45 @@ public class BookDaoImpl implements BookDao {
     public List<Book> findAll() {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-        List<Book> booksList = session.createQuery("from Book",Book.class).getResultList();
+        List<Book> booksList = session.createQuery("from Book", Book.class).getResultList();
         session.getTransaction().commit();
         return booksList;
     }
 
     @Override
-    public Book findById(Long id) {
-        return null;
+    public Optional<Book> findById(Long id) {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        Book book = session.get(Book.class,id);
+        session.getTransaction().commit();
+        return Optional.ofNullable(book);
     }
 
     @Override
     public void save(Book book) {
-
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        session.persist(book);
+        session.getTransaction().commit();
     }
 
     @Override
     public void delete(Book book) {
-
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        session.persist(book);
+        session.getTransaction().commit();
     }
 
     @Override
-    public List<Book> findByName(String name) {
-       return null;
+    public Optional<Book> findByName(String name) {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        Book book = session.createQuery("from  Book where name=:name",Book.class)
+                .setParameter("name", name)
+                .getSingleResult();
+        session.getTransaction().commit();
+        return Optional.ofNullable(book);
     }
 
     @Override
@@ -46,18 +65,31 @@ public class BookDaoImpl implements BookDao {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         List<Book> booksList = session.createQuery("from Book where author = :author",Book.class)
-                .setParameter("author", author).getResultList();
+                .setParameter("author", author)
+                .getResultList();
         session.getTransaction().commit();
         return booksList;
     }
 
     @Override
-    public List<Book> findByGenre(String name) {
-        return null;
+    public List<Book> findByGenre(String genre) {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        List<Book> booksList = session.createQuery("from Book where genre = :genre", Book.class)
+                .setParameter("genre", genre)
+                .getResultList();
+        session.getTransaction().commit();
+        return booksList;
     }
 
     @Override
     public List<Book> findByYear(Integer year) {
-        return null;
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        List<Book> booksList = session.createQuery("from Book where year = :year", Book.class)
+                .setParameter("year", year)
+                .getResultList();
+        session.getTransaction().commit();
+        return booksList;
     }
 }

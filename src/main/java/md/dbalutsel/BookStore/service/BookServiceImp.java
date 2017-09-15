@@ -5,6 +5,7 @@ import md.dbalutsel.BookStore.model.Book;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Optional;
 
 public class BookServiceImp implements BookService {
 
@@ -17,7 +18,7 @@ public class BookServiceImp implements BookService {
     }
 
     @Override
-    public Book findById(Long id) {
+    public Optional<Book> findById(Long id) {
         return bookDao.findById(id);
     }
 
@@ -32,7 +33,7 @@ public class BookServiceImp implements BookService {
     }
 
     @Override
-    public List<Book> findByName(String name) {
+    public Optional<Book> findByName(String name) {
         return bookDao.findByName(name);
     }
 

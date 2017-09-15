@@ -1,7 +1,5 @@
 package md.dbalutsel.BookStore.config;
 
-import md.dbalutsel.BookStore.dao.BookDao;
-import md.dbalutsel.BookStore.dao.BookDaoImpl;
 import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -39,10 +37,5 @@ public class DataConfig {
         dataSource.setUsername(env.getProperty("bookstore.db.username"));
         dataSource.setPassword(env.getProperty("bookstore.db.password"));
         return dataSource;
-    }
-
-    @Bean
-    public BookDao bookDao() {
-        return new BookDaoImpl();
     }
 }

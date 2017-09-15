@@ -3,13 +3,14 @@ package md.dbalutsel.BookStore.service;
 import md.dbalutsel.BookStore.model.Book;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface BookService {
     List<Book> findAll();
-    Book findById(Long id);
+    Optional<Book> findById(Long id);
     void save(Book book);
     void delete(Book book);
-    List<Book> findByName(String name);
+    Optional<Book> findByName(String name);
     List<Book> findByAuthor(String name);
     List<Book> findByGenre(String name);
     List<Book> findByYear(Integer year);

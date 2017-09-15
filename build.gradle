@@ -29,7 +29,7 @@ repositories {
 
 dependencies {
 	compile 'org.springframework:spring-orm'
-	compile 'org.hibernate:hibernate-core'
+	compile group: 'org.hibernate', name: 'hibernate-gradle-plugin', version: '5.2.11.Final'
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile 'org.apache.tomcat:tomcat-dbcp:8.0.32'
 	runtime('org.springframework.boot:spring-boot-devtools')

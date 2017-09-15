@@ -32,12 +32,21 @@ public class Book {
     @NotNull(message = "{category.year.NotNull}")
     private Integer year;
 
-    @Column(name = "genre", columnDefinition = "book_genre")
-    @Enumerated(EnumType.STRING)
+    @Column(name = "genre", columnDefinition = "char(30)")
+    @Length(max = 30, message = "{category.genre.Length}")
+    @NotEmpty(message = "{category.genre.NotEmpty}")
     @NotNull(message = "{category.genre.NotNull}")
-    private BookGenres genre;
+    private String genre;
 
     public Book() {
+    }
+
+    public Book(Long id, String name, String author, Integer year, String genre) {
+        this.id = id;
+        this.name = name;
+        this.author = author;
+        this.year = year;
+        this.genre = genre;
     }
 
     public Long getId() {
@@ -72,11 +81,11 @@ public class Book {
         this.year = year;
     }
 
-    public BookGenres getGenre() {
+    public String getGenre() {
         return genre;
     }
 
-    public void setGenre(BookGenres genre) {
+    public void setGenre(String genre) {
         this.genre = genre;
     }
 

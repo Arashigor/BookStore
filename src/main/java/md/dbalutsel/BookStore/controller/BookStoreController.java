@@ -4,10 +4,13 @@ import md.dbalutsel.BookStore.model.Book;
 import md.dbalutsel.BookStore.model.ConstraintViolationExceptionResponse;
 import md.dbalutsel.BookStore.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.ConstraintViolationException;
+import java.util.List;
+import java.util.Optional;
+
+import static org.springframework.http.HttpStatus.*;
 
 @RestController
 public class BookStoreController {
@@ -17,30 +20,51 @@ public class BookStoreController {
 
     @GetMapping("/books")
     public ResponseEntity<Iterable<Book>> getAllBooks() {
-        return new ResponseEntity<>(bookService.findAll(),HttpStatus.OK);
-    }
-
-    @GetMapping(value = "/books",params = "author")
-    public ResponseEntity<Iterable<Book>> getAllBooksByAuthor(@RequestParam("author") String author) {
-        return new ResponseEntity<>(bookService.findByAuthor(author), HttpStatus.OK);
+        List<Book> books = bookService.findAll();
+        return (books.isEmpty()) ? new ResponseEntity<>(NOT_FOUND) : new ResponseEntity<>(books, OK);
     }
 
     @GetMapping("/books/{id}")
     public ResponseEntity<Book> getBookById(@PathVariable(name = "id") Long id) {
-        Book book = bookService.findById(id);
-        if (book!=null) {
-            return new ResponseEntity<>(book,HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        Optional<Book> book = bookService.findById(id);
+        return book.map(book1 -> new ResponseEntity<>(book1, OK)).orElseGet(() -> new ResponseEntity<>(NOT_FOUND));
+    }
+
+    @GetMapping(value = "/books", params = "name")
+    public ResponseEntity<Book> getBookByName(@RequestParam("name") String name) {
+        Optional<Book> book = bookService.findByName(name);
+        return book.map(book1 -> new ResponseEntity<>(book1, OK)).orElseGet(() -> new ResponseEntity<>(NOT_FOUND));
+    }
+
+    @GetMapping(value = "/books", params = "author")
+    public ResponseEntity<Iterable<Book>> getAllBooksByAuthor(@RequestParam("author") String author) {
+        List<Book> books = bookService.findByAuthor(author);
+        return (books.isEmpty()) ? new ResponseEntity<>(NOT_FOUND) : new ResponseEntity<>(books, OK);
+    }
+
+    @GetMapping(value = "/books", params = "year")
+    public ResponseEntity<Iterable<Book>> getAllBooksByYear(@RequestParam("year") Integer year) {
+        List<Book> books = bookService.findByYear(year);
+        return (books.isEmpty()) ? new ResponseEntity<>(NOT_FOUND) : new ResponseEntity<>(books, OK);
+    }
+
+    @GetMapping(value = "/books", params = "genre")
+    public ResponseEntity<Iterable<Book>> getAllBooksByGenre(@RequestParam("genre") String genre) {
+        List<Book> books = bookService.findByGenre(genre);
+        return (books.isEmpty()) ? new ResponseEntity<>(NOT_FOUND) : new ResponseEntity<>(books, OK);
     }
 
     @PostMapping("/books")
     public ResponseEntity<?> addBook(@RequestBody Book book) {
         bookService.save(book);
-        return new ResponseEntity<>(book, HttpStatus.CREATED);
+        return new ResponseEntity<>(CREATED);
     }
 
+    @DeleteMapping("/books")
+    public ResponseEntity<?> deleteBook(@RequestBody Book book) {
+        bookService.delete(book);
+        return new ResponseEntity<>(ACCEPTED);
+    }
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<String> exceptionHandler(ConstraintViolationException ex) {
@@ -48,6 +72,6 @@ public class BookStoreController {
         ConstraintViolationExceptionResponse error =
                 new ConstraintViolationExceptionResponse(ex.getConstraintViolations());
 
-        return new ResponseEntity<>(error.toString(), HttpStatus.OK);
+        return new ResponseEntity<>(error.toString(), OK);
     }
 }
