@@ -18,7 +18,7 @@ public class BookServiceImp implements BookService {
     }
 
     @Override
-    public Optional<Book> findById(Long id) {
+    public Optional<Book> findById(Integer id) {
         return bookDao.findById(id);
     }
 

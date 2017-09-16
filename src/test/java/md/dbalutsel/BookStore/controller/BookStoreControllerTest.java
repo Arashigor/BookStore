@@ -1,6 +1,7 @@
 package md.dbalutsel.BookStore.controller;
 
 import md.dbalutsel.BookStore.config.TestConfig;
+import md.dbalutsel.BookStore.config.TestDataConfig;
 import md.dbalutsel.BookStore.model.Book;
 import md.dbalutsel.BookStore.service.BookService;
 import org.junit.Before;
@@ -28,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {TestConfig.class})
+@ContextConfiguration(classes = {TestConfig.class, TestDataConfig.class})
 public class BookStoreControllerTest {
 
     @InjectMocks
@@ -46,7 +47,7 @@ public class BookStoreControllerTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         this.mockMvc = MockMvcBuilders.standaloneSetup(bookStoreController).build();
-        book = new Book(Long.valueOf(ALLOWED_ID), ALLOWED_NAME, ALLOWED_AUTHOR, ALLOWED_YEAR, ALLOWED_GENRE);
+        book = new Book(ALLOWED_ID, ALLOWED_NAME, ALLOWED_AUTHOR, ALLOWED_YEAR, ALLOWED_GENRE);
     }
 
     @Test
@@ -83,7 +84,7 @@ public class BookStoreControllerTest {
 
     @Test
     public void getBookByIdOkTest() throws Exception {
-        when(bookService.findById(Long.valueOf(ALLOWED_ID))).thenReturn(Optional.of(book));
+        when(bookService.findById(ALLOWED_ID)).thenReturn(Optional.of(book));
 
         mockMvc.perform(get("/books/" + ALLOWED_ID))
                 .andDo(print())
@@ -96,20 +97,20 @@ public class BookStoreControllerTest {
                 .andExpect(jsonPath("$.genre", is(ALLOWED_GENRE)))
                 .andReturn();
 
-        verify(bookService, times(1)).findById(Long.valueOf(ALLOWED_ID));
+        verify(bookService, times(1)).findById(ALLOWED_ID);
         verifyNoMoreInteractions(bookService);
     }
 
     @Test
     public void getBookByIdNotFoundTest() throws Exception {
-        when(bookService.findById(Long.valueOf(WRONG_ID))).thenReturn(Optional.empty());
+        when(bookService.findById(WRONG_ID)).thenReturn(Optional.empty());
 
         mockMvc.perform(get("/books/" + WRONG_ID))
                 .andDo(print())
                 .andExpect(status().isNotFound())
                 .andReturn();
 
-        verify(bookService, times(1)).findById(Long.valueOf(WRONG_ID));
+        verify(bookService, times(1)).findById(WRONG_ID);
         verifyNoMoreInteractions(bookService);
     }
 

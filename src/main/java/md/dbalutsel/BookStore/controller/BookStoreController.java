@@ -25,7 +25,7 @@ public class BookStoreController {
     }
 
     @GetMapping("/books/{id}")
-    public ResponseEntity<Book> getBookById(@PathVariable(name = "id") Long id) {
+    public ResponseEntity<Book> getBookById(@PathVariable(name = "id") Integer id) {
         Optional<Book> book = bookService.findById(id);
         return book.map(book1 -> new ResponseEntity<>(book1, OK)).orElseGet(() -> new ResponseEntity<>(NOT_FOUND));
     }

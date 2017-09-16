@@ -9,7 +9,7 @@ import java.util.Optional;
 @Repository("BookDao")
 public interface BookDao {
     List<Book> findAll();
-    Optional<Book> findById(Long id);
+    Optional<Book> findById(Integer id);
     void save(Book book);
     void delete(Book book);
     Optional<Book> findByName(String name);

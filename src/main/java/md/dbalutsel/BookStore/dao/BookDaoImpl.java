@@ -21,32 +21,34 @@ public class BookDaoImpl implements BookDao {
         session.beginTransaction();
         List<Book> booksList = session.createQuery("from Book", Book.class).getResultList();
         session.getTransaction().commit();
+        session.close();
         return booksList;
     }
 
     @Override
-    public Optional<Book> findById(Long id) {
+    public Optional<Book> findById(Integer id) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         Book book = session.get(Book.class,id);
         session.getTransaction().commit();
+        session.close();
         return Optional.ofNullable(book);
     }
 
     @Override
     public void save(Book book) {
         Session session = sessionFactory.openSession();
-        session.beginTransaction();
-        session.persist(book);
-        session.getTransaction().commit();
+        session.save(book);
+        session.close();
     }
 
     @Override
     public void delete(Book book) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-        session.persist(book);
+        session.delete(book);
         session.getTransaction().commit();
+        session.close();
     }
 
     @Override
@@ -57,6 +59,7 @@ public class BookDaoImpl implements BookDao {
                 .setParameter("name", name)
                 .getSingleResult();
         session.getTransaction().commit();
+        session.close();
         return Optional.ofNullable(book);
     }
 
@@ -68,6 +71,7 @@ public class BookDaoImpl implements BookDao {
                 .setParameter("author", author)
                 .getResultList();
         session.getTransaction().commit();
+        session.close();
         return booksList;
     }
 
@@ -79,6 +83,7 @@ public class BookDaoImpl implements BookDao {
                 .setParameter("genre", genre)
                 .getResultList();
         session.getTransaction().commit();
+        session.close();
         return booksList;
     }
 
@@ -90,6 +95,7 @@ public class BookDaoImpl implements BookDao {
                 .setParameter("year", year)
                 .getResultList();
         session.getTransaction().commit();
+        session.close();
         return booksList;
     }
 }

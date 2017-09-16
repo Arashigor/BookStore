@@ -1,1 +1,2 @@
-INSERT INTO books VALUES (0, 'Mastering Lambdas', 'M. Naftalin', 2014, 'Education');
+DELETE FROM bookstore.books;
+INSERT INTO bookstore.books VALUES (0, 'NAME', 'AUTHOR', 2017, 'GENRE');

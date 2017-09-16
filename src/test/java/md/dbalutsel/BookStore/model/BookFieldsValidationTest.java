@@ -1,6 +1,7 @@
 package md.dbalutsel.BookStore.model;
 
 import md.dbalutsel.BookStore.config.TestConfig;
+import md.dbalutsel.BookStore.config.TestDataConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {TestConfig.class})
+@ContextConfiguration(classes = {TestConfig.class, TestDataConfig.class})
 public class BookFieldsValidationTest {
 
     @Autowired

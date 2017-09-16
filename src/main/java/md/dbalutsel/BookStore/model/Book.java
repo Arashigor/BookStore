@@ -13,7 +13,7 @@ public class Book {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Column(name = "name", columnDefinition = "char(30)")
     @Length(max = 30, message = "{category.name.Length}")
@@ -41,7 +41,7 @@ public class Book {
     public Book() {
     }
 
-    public Book(Long id, String name, String author, Integer year, String genre) {
+    public Book(Integer id, String name, String author, Integer year, String genre) {
         this.id = id;
         this.name = name;
         this.author = author;
@@ -49,11 +49,18 @@ public class Book {
         this.genre = genre;
     }
 
-    public Long getId() {
+    public Book(String name, String author, Integer year, String genre) {
+        this.name = name;
+        this.author = author;
+        this.year = year;
+        this.genre = genre;
+    }
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
