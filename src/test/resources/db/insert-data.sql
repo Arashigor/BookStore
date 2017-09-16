@@ -1,0 +1,1 @@
+INSERT INTO books VALUES (0, 'Mastering Lambdas', 'M. Naftalin', 2014, 'Education');

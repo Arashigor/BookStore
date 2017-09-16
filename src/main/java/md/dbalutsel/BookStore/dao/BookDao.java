@@ -1,10 +1,12 @@
 package md.dbalutsel.BookStore.dao;
 
 import md.dbalutsel.BookStore.model.Book;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository("BookDao")
 public interface BookDao {
     List<Book> findAll();
     Optional<Book> findById(Long id);
