@@ -39,7 +39,7 @@ public class BookFieldsValidationTest {
         book.setName(STRING_WITH_40_CHARS);
         book.setAuthor(STRING_WITH_40_CHARS);
         book.setGenre(STRING_WITH_40_CHARS);
-        book.setYear(WRONG_YEAR_VALUE);
+        book.setYear(WRONG_YEAR);
         Set<ConstraintViolation<Book>> violations = validator.validate(book);
         assertThat("All length and range constraints are violated!", violations, hasSize(4));
     }
