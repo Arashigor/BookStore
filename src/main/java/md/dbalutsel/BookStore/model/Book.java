@@ -106,4 +106,28 @@ public class Book {
                 ", genre='" + genre + '\'' +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Book book = (Book) o;
+
+        if (getId() != null ? !getId().equals(book.getId()) : book.getId() != null) return false;
+        if (getName() != null ? !getName().equals(book.getName()) : book.getName() != null) return false;
+        if (getAuthor() != null ? !getAuthor().equals(book.getAuthor()) : book.getAuthor() != null) return false;
+        if (getYear() != null ? !getYear().equals(book.getYear()) : book.getYear() != null) return false;
+        return getGenre() != null ? getGenre().equals(book.getGenre()) : book.getGenre() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getId() != null ? getId().hashCode() : 0;
+        result = 31 * result + (getName() != null ? getName().hashCode() : 0);
+        result = 31 * result + (getAuthor() != null ? getAuthor().hashCode() : 0);
+        result = 31 * result + (getYear() != null ? getYear().hashCode() : 0);
+        result = 31 * result + (getGenre() != null ? getGenre().hashCode() : 0);
+        return result;
+    }
 }

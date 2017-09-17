@@ -30,8 +30,6 @@ public class BookServiceTest {
     @Test
     public void findAllTest() {
         List<Book> list = bookService.findAll();
-
-        assertNotNull(list);
         assertThat("Should contain one entry", list, hasSize(1));
     }
 
@@ -50,16 +48,12 @@ public class BookServiceTest {
     @Test
     public void findByAuthorTest() {
         List<Book> list = bookService.findByAuthor(ALLOWED_AUTHOR);
-
-        assertNotNull(list);
         assertThat("Should contain one entry", list, hasSize(1));
     }
 
     @Test
     public void findByYearTest() {
         List<Book> list = bookService.findByYear(ALLOWED_YEAR);
-
-        assertNotNull(list);
         assertThat("Should contain one entry", list, hasSize(1));
     }
 
@@ -67,8 +61,6 @@ public class BookServiceTest {
     @Test
     public void findByGenre() {
         List<Book> list = bookService.findByGenre(ALLOWED_GENRE);
-
-        assertNotNull(list);
         assertThat("Should contain one entry", list, hasSize(1));
     }
 

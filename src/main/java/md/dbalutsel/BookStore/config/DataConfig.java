@@ -22,9 +22,9 @@ public class DataConfig {
 
     @Bean
     public JpaTransactionManager transactionManager() {
-        JpaTransactionManager hibernateTransactionManager = new JpaTransactionManager();
-        hibernateTransactionManager.setEntityManagerFactory(sessionFactory().getObject());
-        return hibernateTransactionManager;
+        JpaTransactionManager jpaTransactionManager = new JpaTransactionManager();
+        jpaTransactionManager.setEntityManagerFactory(sessionFactory().getObject());
+        return jpaTransactionManager;
     }
 
     @Bean

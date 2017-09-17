@@ -1,5 +1,6 @@
 package md.dbalutsel.BookStore.controller;
 
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import md.dbalutsel.BookStore.config.TestConfig;
 import md.dbalutsel.BookStore.config.TestDataConfig;
@@ -24,7 +25,9 @@ import java.util.Optional;
 import static md.dbalutsel.BookStore.data.Constants.*;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.*;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
+import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -251,21 +254,29 @@ public class BookStoreControllerTest {
     public void saveBookTest() throws Exception {
         doNothing().when(bookService).save(book);
 
-        String jsonBook = new GsonBuilder().create().toJson(book);
+        String jsonBook = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+                .create()
+                .toJson(book, Book.class);
 
-        mockMvc.perform(post("/books").contentType(APPLICATION_JSON_UTF8).content(jsonBook))
+        mockMvc.perform(post("/books").contentType(APPLICATION_JSON).content(new Gson().toJson(book)))
                 .andExpect(status().isCreated())
                 .andReturn();
+
+        verify(bookService, times(1)).save(book);
+        verifyNoMoreInteractions(bookService);
     }
 
     @Test
     public void deleteBookTest() throws Exception {
         doNothing().when(bookService).delete(book);
 
-        String jsonBook = new GsonBuilder().create().toJson(book);
-
-        mockMvc.perform(delete("/books").contentType(APPLICATION_JSON_UTF8).content(jsonBook))
+        mockMvc.perform(delete("/books").contentType(APPLICATION_JSON).content(new Gson().toJson(book)))
                 .andExpect(status().isAccepted())
                 .andReturn();
+
+
+        verify(bookService, times(1)).delete(book);
+        verifyNoMoreInteractions(bookService);
     }
 }
