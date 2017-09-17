@@ -15,11 +15,11 @@ import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import javax.sql.DataSource;
 
 @Configuration
-@PropertySource("app.properties")
+@PropertySource("db.properties")
 public class TestDataConfig {
 
     @Autowired
-    Environment env;
+    private Environment env;
 
     @Bean
     public LocalSessionFactoryBean sessionFactory() {
