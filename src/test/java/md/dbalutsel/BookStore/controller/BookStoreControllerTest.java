@@ -253,12 +253,7 @@ public class BookStoreControllerTest {
     @Test
     public void saveBookTest() throws Exception {
         doNothing().when(bookService).save(book);
-
-        String jsonBook = new GsonBuilder()
-                .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
-                .create()
-                .toJson(book, Book.class);
-
+        
         mockMvc.perform(post("/books").contentType(APPLICATION_JSON).content(new Gson().toJson(book)))
                 .andExpect(status().isCreated())
                 .andReturn();
