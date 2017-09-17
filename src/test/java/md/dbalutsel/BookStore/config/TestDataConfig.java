@@ -8,7 +8,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
@@ -35,11 +34,10 @@ public class TestDataConfig {
     @Bean
     public DataSource dataSource() {
         EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
-        EmbeddedDatabase db = builder
+        return builder
                 .setType(EmbeddedDatabaseType.H2)
                 .addScript("db/create-db.sql")
                 .addScript("db/insert-data.sql")
                 .build();
-        return db;
     }
 }
