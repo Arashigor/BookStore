@@ -9,6 +9,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.orm.jpa.JpaTransactionManager;
 
 import javax.sql.DataSource;
 
@@ -18,6 +19,13 @@ public class DataConfig {
 
     @Autowired
     private Environment env;
+
+    @Bean
+    public JpaTransactionManager transactionManager() {
+        JpaTransactionManager hibernateTransactionManager = new JpaTransactionManager();
+        hibernateTransactionManager.setEntityManagerFactory(sessionFactory().getObject());
+        return hibernateTransactionManager;
+    }
 
     @Bean
     public LocalSessionFactoryBean sessionFactory() {

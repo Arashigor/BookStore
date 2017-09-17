@@ -1,5 +1,6 @@
 package md.dbalutsel.BookStore.controller;
 
+import com.google.gson.GsonBuilder;
 import md.dbalutsel.BookStore.config.TestConfig;
 import md.dbalutsel.BookStore.config.TestDataConfig;
 import md.dbalutsel.BookStore.model.Book;
@@ -47,7 +48,11 @@ public class BookStoreControllerTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         this.mockMvc = MockMvcBuilders.standaloneSetup(bookStoreController).build();
-        book = new Book(ALLOWED_ID, ALLOWED_NAME, ALLOWED_AUTHOR, ALLOWED_YEAR, ALLOWED_GENRE);
+        book.setId(ALLOWED_ID);
+        book.setName(ALLOWED_NAME);
+        book.setAuthor(ALLOWED_AUTHOR);
+        book.setYear(ALLOWED_YEAR);
+        book.setGenre(ALLOWED_GENRE);
     }
 
     @Test
@@ -240,5 +245,27 @@ public class BookStoreControllerTest {
 
         verify(bookService, times(1)).findByGenre(WRONG_GENRE);
         verifyNoMoreInteractions(bookService);
+    }
+
+    @Test
+    public void saveBookTest() throws Exception {
+        doNothing().when(bookService).save(book);
+
+        String jsonBook = new GsonBuilder().create().toJson(book);
+
+        mockMvc.perform(post("/books").contentType(APPLICATION_JSON_UTF8).content(jsonBook))
+                .andExpect(status().isCreated())
+                .andReturn();
+    }
+
+    @Test
+    public void deleteBookTest() throws Exception {
+        doNothing().when(bookService).delete(book);
+
+        String jsonBook = new GsonBuilder().create().toJson(book);
+
+        mockMvc.perform(delete("/books").contentType(APPLICATION_JSON_UTF8).content(jsonBook))
+                .andExpect(status().isAccepted())
+                .andReturn();
     }
 }

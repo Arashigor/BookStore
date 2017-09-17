@@ -2,6 +2,7 @@ package md.dbalutsel.BookStore.service;
 
 import md.dbalutsel.BookStore.dao.BookDao;
 import md.dbalutsel.BookStore.model.Book;
+import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;

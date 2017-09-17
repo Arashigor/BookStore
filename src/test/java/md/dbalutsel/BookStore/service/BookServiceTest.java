@@ -1,4 +1,4 @@
-package md.dbalutsel.BookStore.dao;
+package md.dbalutsel.BookStore.service;
 
 import md.dbalutsel.BookStore.config.TestConfig;
 import md.dbalutsel.BookStore.config.TestDataConfig;
@@ -22,14 +22,14 @@ import static org.junit.Assert.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {TestConfig.class, TestDataConfig.class})
 @Sql(executionPhase= Sql.ExecutionPhase.BEFORE_TEST_METHOD,scripts="classpath:/db/insert-data.sql")
-public class BookDaoTest {
+public class BookServiceTest {
 
     @Autowired
-    BookDao bookDao;
+    BookService bookService;
 
     @Test
     public void findAllTest() {
-        List<Book> list = bookDao.findAll();
+        List<Book> list = bookService.findAll();
 
         assertNotNull(list);
         assertThat("Should contain one entry", list, hasSize(1));
@@ -37,19 +37,19 @@ public class BookDaoTest {
 
     @Test
     public void findByIdTest() {
-        Optional<Book> bookOptional = bookDao.findById(ALLOWED_ID);
+        Optional<Book> bookOptional = bookService.findById(ALLOWED_ID);
         assertTrue("Should get entity instance", bookOptional.isPresent());
     }
 
     @Test
     public void findByName() {
-        Optional<Book> bookOptional = bookDao.findByName(ALLOWED_NAME);
+        Optional<Book> bookOptional = bookService.findByName(ALLOWED_NAME);
         assertTrue("Should get entity instance", bookOptional.isPresent());
     }
 
     @Test
     public void findByAuthorTest() {
-        List<Book> list = bookDao.findByAuthor(ALLOWED_AUTHOR);
+        List<Book> list = bookService.findByAuthor(ALLOWED_AUTHOR);
 
         assertNotNull(list);
         assertThat("Should contain one entry", list, hasSize(1));
@@ -57,7 +57,7 @@ public class BookDaoTest {
 
     @Test
     public void findByYearTest() {
-        List<Book> list = bookDao.findByYear(ALLOWED_YEAR);
+        List<Book> list = bookService.findByYear(ALLOWED_YEAR);
 
         assertNotNull(list);
         assertThat("Should contain one entry", list, hasSize(1));
@@ -66,7 +66,7 @@ public class BookDaoTest {
 
     @Test
     public void findByGenre() {
-        List<Book> list = bookDao.findByGenre(ALLOWED_GENRE);
+        List<Book> list = bookService.findByGenre(ALLOWED_GENRE);
 
         assertNotNull(list);
         assertThat("Should contain one entry", list, hasSize(1));
@@ -74,7 +74,7 @@ public class BookDaoTest {
 
     @Test
     public void correctEntityFieldValuesTest() {
-        Book book = bookDao.findById(ALLOWED_ID).orElse(new Book());
+        Book book = bookService.findById(ALLOWED_ID).orElse(new Book());
 
         assertEquals("Should have correct id", book.getId(), ALLOWED_ID);
         assertEquals("Should have correct name", book.getName(), ALLOWED_NAME);
@@ -85,8 +85,8 @@ public class BookDaoTest {
     @Test
     public void saveTest() {
         Book bookToSave = new Book(ALLOWED_ID+1, ALLOWED_NAME, ALLOWED_AUTHOR, ALLOWED_YEAR, ALLOWED_GENRE);
-        bookDao.save(bookToSave);
-        Optional<Book> fetchedBook = bookDao.findById(ALLOWED_ID+1);
+        bookService.save(bookToSave);
+        Optional<Book> fetchedBook = bookService.findById(ALLOWED_ID+1);
 
         assertTrue("Should get recently saved entry", fetchedBook.isPresent());
     }
@@ -94,9 +94,10 @@ public class BookDaoTest {
     @Test
     public void deleteTest() {
         Book book = new Book(ALLOWED_ID, ALLOWED_NAME, ALLOWED_AUTHOR, ALLOWED_YEAR, ALLOWED_GENRE);
-        bookDao.delete(book);
 
-        Optional<Book> fetchedBook = bookDao.findById(ALLOWED_ID);
+        bookService.delete(book);
+        Optional<Book> fetchedBook = bookService.findById(ALLOWED_ID);
+
         assertFalse("Should not get recently deleted entry", fetchedBook.isPresent());
     }
 }
