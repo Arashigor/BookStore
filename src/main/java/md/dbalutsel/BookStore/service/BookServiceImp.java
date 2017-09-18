@@ -23,13 +23,13 @@ public class BookServiceImp implements BookService {
     }
 
     @Override
-    public void save(Book book) {
-        bookDao.save(book);
+    public Integer save(Book book) {
+        return bookDao.save(book);
     }
 
     @Override
-    public void delete(Book book) {
-        bookDao.delete(book);
+    public Integer delete(Integer bookId) {
+        return bookDao.delete(bookId);
     }
 
     @Override

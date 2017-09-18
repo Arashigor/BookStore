@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 public class BookDaoImpl implements BookDao {
 
@@ -25,13 +26,14 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public void save(Book book) {
-        session.save(book);
+    public Integer save(Book book) {
+        return (Integer) session.save(book);
     }
 
     @Override
-    public void delete(Book book) {
-        session.delete(book);
+    public Integer delete(Integer bookId) {
+        return session.createQuery("delete from Book where id=:id")
+                .setParameter("id",bookId).executeUpdate();
     }
 
     @Override

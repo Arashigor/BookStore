@@ -18,10 +18,10 @@ public interface BookService {
     Optional<Book> findById(Integer id);
 
     @Transactional(rollbackFor = HibernateException.class, propagation = Propagation.REQUIRES_NEW)
-    void save(Book book);
+    Integer save(Book book);
 
     @Transactional(rollbackFor = HibernateException.class, propagation = Propagation.REQUIRES_NEW)
-    void delete(Book book);
+    Integer delete(Integer bookId);
 
     Optional<Book> findByName(String name);
 

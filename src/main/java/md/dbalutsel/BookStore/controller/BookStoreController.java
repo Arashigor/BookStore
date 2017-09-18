@@ -1,12 +1,11 @@
 package md.dbalutsel.BookStore.controller;
 
 import md.dbalutsel.BookStore.model.Book;
-import md.dbalutsel.BookStore.model.ConstraintViolationExceptionResponse;
 import md.dbalutsel.BookStore.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import javax.validation.ConstraintViolationException;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -60,18 +59,8 @@ public class BookStoreController {
         return new ResponseEntity<>(CREATED);
     }
 
-    @DeleteMapping("/books")
-    public ResponseEntity<?> deleteBook(@RequestBody Book book) {
-        bookService.delete(book);
-        return new ResponseEntity<>(ACCEPTED);
-    }
-
-    @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<String> exceptionHandler(ConstraintViolationException ex) {
-
-        ConstraintViolationExceptionResponse error =
-                new ConstraintViolationExceptionResponse(ex.getConstraintViolations());
-
-        return new ResponseEntity<>(error.toString(), OK);
+    @DeleteMapping("/books/{id}")
+    public ResponseEntity<?> deleteBook(@PathVariable(name = "id") Integer id) {
+        return (bookService.delete(id)==1) ? new ResponseEntity<>(OK) : new ResponseEntity<>(NOT_FOUND);
     }
 }

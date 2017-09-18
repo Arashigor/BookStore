@@ -17,6 +17,7 @@ import java.util.Optional;
 import static md.dbalutsel.BookStore.data.Constants.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -76,20 +77,20 @@ public class BookServiceTest {
 
     @Test
     public void saveTest() {
-        Book bookToSave = new Book(ALLOWED_ID+1, ALLOWED_NAME, ALLOWED_AUTHOR, ALLOWED_YEAR, ALLOWED_GENRE);
-        bookService.save(bookToSave);
-        Optional<Book> fetchedBook = bookService.findById(ALLOWED_ID+1);
-
-        assertTrue("Should get recently saved entry", fetchedBook.isPresent());
+        Book bookToSave = new Book(ALLOWED_NAME, ALLOWED_AUTHOR, ALLOWED_YEAR, ALLOWED_GENRE);
+        Integer bookId = bookService.save(bookToSave);
+        assertThat("Should add one entry", bookId, is(1));
     }
 
     @Test
-    public void deleteTest() {
-        Book book = new Book(ALLOWED_ID, ALLOWED_NAME, ALLOWED_AUTHOR, ALLOWED_YEAR, ALLOWED_GENRE);
+    public void deleteSuccessTest() {
+        Integer rowsAffected = bookService.delete(ALLOWED_ID);
+        assertThat("Should affect 1 row", rowsAffected, is(1));
+    }
 
-        bookService.delete(book);
-        Optional<Book> fetchedBook = bookService.findById(ALLOWED_ID);
-
-        assertFalse("Should not get recently deleted entry", fetchedBook.isPresent());
+    @Test
+    public void deleteFailTest() {
+        Integer rowsAffected = bookService.delete(WRONG_ID);
+        assertThat("Should not affect any row", rowsAffected, is(0));
     }
 }

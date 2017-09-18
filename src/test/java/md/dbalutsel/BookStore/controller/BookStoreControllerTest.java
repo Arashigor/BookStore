@@ -1,11 +1,11 @@
 package md.dbalutsel.BookStore.controller;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import md.dbalutsel.BookStore.config.TestConfig;
 import md.dbalutsel.BookStore.config.TestDataConfig;
 import md.dbalutsel.BookStore.model.Book;
 import md.dbalutsel.BookStore.service.BookService;
+import org.hibernate.HibernateException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,6 +18,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.util.NestedServletException;
 
 import java.util.Collections;
 import java.util.Optional;
@@ -27,7 +28,6 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
-import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -252,8 +252,8 @@ public class BookStoreControllerTest {
 
     @Test
     public void saveBookTest() throws Exception {
-        doNothing().when(bookService).save(book);
-        
+        when(bookService.save(book)).thenReturn(anyInt());
+
         mockMvc.perform(post("/books").contentType(APPLICATION_JSON).content(new Gson().toJson(book)))
                 .andExpect(status().isCreated())
                 .andReturn();
@@ -263,15 +263,43 @@ public class BookStoreControllerTest {
     }
 
     @Test
-    public void deleteBookTest() throws Exception {
-        doNothing().when(bookService).delete(book);
+    public void deleteBookSuccessTest() throws Exception {
+        when(bookService.delete(ALLOWED_ID)).thenReturn(1);
 
-        mockMvc.perform(delete("/books").contentType(APPLICATION_JSON).content(new Gson().toJson(book)))
-                .andExpect(status().isAccepted())
+        mockMvc.perform(delete("/books/"+ALLOWED_ID))
+                .andExpect(status().isOk())
                 .andReturn();
 
 
-        verify(bookService, times(1)).delete(book);
+        verify(bookService, times(1)).delete(ALLOWED_ID);
+        verifyNoMoreInteractions(bookService);
+    }
+
+    @Test
+    public void deleteBookFailTest() throws Exception {
+        when(bookService.delete(WRONG_ID)).thenReturn(0);
+
+        mockMvc.perform(delete("/books/"+WRONG_ID))
+                .andExpect(status().isNotFound())
+                .andReturn();
+
+
+        verify(bookService, times(1)).delete(WRONG_ID);
+        verifyNoMoreInteractions(bookService);
+    }
+
+    @Test(expected = NestedServletException.class)
+    public void databaseExceptionTest() throws Exception {
+        when(bookService.delete(WRONG_ID)).thenReturn(0);
+
+        when(bookService.findAll()).thenThrow(new HibernateException("Something wrong with db!"));
+
+        mockMvc.perform(get("/books"))
+                .andDo(print())
+                .andExpect(status().isMethodNotAllowed())
+                .andReturn();
+
+        verify(bookService, times(1)).findAll();
         verifyNoMoreInteractions(bookService);
     }
 }
