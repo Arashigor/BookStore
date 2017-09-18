@@ -3,12 +3,14 @@ package md.dbalutsel.BookStore.dao;
 import md.dbalutsel.BookStore.model.Book;
 
 import org.hibernate.Session;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
+@Repository
 public class BookDaoImpl implements BookDao {
 
     @PersistenceContext

@@ -3,14 +3,16 @@ package md.dbalutsel.BookStore.service;
 import md.dbalutsel.BookStore.dao.BookDao;
 import md.dbalutsel.BookStore.model.Book;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class BookServiceImp implements BookService {
 
     @Autowired
-    BookDao bookDao;
+    private BookDao bookDao;
 
     @Override
     public List<Book> findAll() {

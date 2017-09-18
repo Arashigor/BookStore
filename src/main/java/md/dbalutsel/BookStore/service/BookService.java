@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-@Service
 @Transactional(rollbackFor = HibernateException.class, readOnly = true, propagation = Propagation.REQUIRES_NEW)
 public interface BookService {
 
