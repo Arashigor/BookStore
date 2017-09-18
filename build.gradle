@@ -19,7 +19,7 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 war {
-	baseName = 'BookStore'
+	baseName = 'bookstore'
 	version =  '1.0.0'
 }
 
