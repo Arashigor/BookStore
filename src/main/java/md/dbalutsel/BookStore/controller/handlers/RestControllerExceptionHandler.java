@@ -12,13 +12,14 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import javax.validation.ConstraintViolationException;
 
 import static md.dbalutsel.BookStore.data.Constants.REST_ERROR_MSG;
-import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @ControllerAdvice
 public class RestControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
-    protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object msg, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object msg, HttpHeaders headers,
+                                                             HttpStatus status, WebRequest request) {
         return super.handleExceptionInternal(ex, REST_ERROR_MSG, headers, status, request);
     }
 
@@ -28,6 +29,6 @@ public class RestControllerExceptionHandler extends ResponseEntityExceptionHandl
         ConstraintViolationExceptionResponse error =
                 new ConstraintViolationExceptionResponse(ex.getConstraintViolations());
 
-        return new ResponseEntity<>(error.toString(), OK);
+        return new ResponseEntity<>(error.toString(), BAD_REQUEST);
     }
 }

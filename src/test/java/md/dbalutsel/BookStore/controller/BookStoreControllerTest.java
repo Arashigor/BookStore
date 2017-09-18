@@ -20,6 +20,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.util.NestedServletException;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import java.util.Collections;
 import java.util.Optional;
 
@@ -267,7 +269,7 @@ public class BookStoreControllerTest {
         when(bookService.delete(ALLOWED_ID)).thenReturn(1);
 
         mockMvc.perform(delete("/books/"+ALLOWED_ID))
-                .andExpect(status().isOk())
+                .andExpect(status().isNoContent())
                 .andReturn();
 
 
@@ -296,7 +298,7 @@ public class BookStoreControllerTest {
 
         mockMvc.perform(get("/books"))
                 .andDo(print())
-                .andExpect(status().isMethodNotAllowed())
+                .andExpect(status().isInternalServerError())
                 .andReturn();
 
         verify(bookService, times(1)).findAll();

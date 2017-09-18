@@ -61,6 +61,6 @@ public class BookStoreController {
 
     @DeleteMapping("/books/{id}")
     public ResponseEntity<?> deleteBook(@PathVariable(name = "id") Integer id) {
-        return (bookService.delete(id)==1) ? new ResponseEntity<>(OK) : new ResponseEntity<>(NOT_FOUND);
+        return (bookService.delete(id)==1) ? new ResponseEntity<>(NO_CONTENT) : new ResponseEntity<>(NOT_FOUND);
     }
 }
