@@ -1,4 +1,4 @@
-package md.dbalutsel.BookStore.config;
+package md.dbalutsel.bookstore.config;
 
 import org.springframework.context.annotation.Configuration;
 

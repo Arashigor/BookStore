@@ -1,4 +1,4 @@
-package md.dbalutsel.BookStore.model;
+package md.dbalutsel.bookstore.model.handlers;
 
 import javax.validation.ConstraintViolation;
 import java.util.Set;

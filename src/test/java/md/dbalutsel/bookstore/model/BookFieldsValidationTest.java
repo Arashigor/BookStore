@@ -1,8 +1,7 @@
-package md.dbalutsel.BookStore.validator;
+package md.dbalutsel.bookstore.model;
 
-import md.dbalutsel.BookStore.config.TestConfig;
-import md.dbalutsel.BookStore.model.Book;
-import md.dbalutsel.BookStore.model.BookGenres;
+import md.dbalutsel.bookstore.config.TestConfig;
+import md.dbalutsel.bookstore.config.TestDataConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,14 +9,15 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import javax.validation.ConstraintViolation;
+
 import java.util.Set;
 
-import static md.dbalutsel.BookStore.data.Data.*;
+import static md.dbalutsel.bookstore.data.Constants.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {TestConfig.class})
+@ContextConfiguration(classes = {TestConfig.class, TestDataConfig.class})
 public class BookFieldsValidationTest {
 
     @Autowired
@@ -33,14 +33,15 @@ public class BookFieldsValidationTest {
         book.setAuthor(null);
         book.setGenre(null);
         Set<ConstraintViolation<Book>> violations = validator.validate(book);
-        assertThat("All empty and null constraints are violated!", violations, hasSize(6));
+        assertThat("All empty and null constraints are violated!", violations, hasSize(7));
     }
 
     @Test
     public void ShouldFailBookRangeAndLengthValidationTest() {
         book.setName(STRING_WITH_40_CHARS);
         book.setAuthor(STRING_WITH_40_CHARS);
-        book.setYear(WRONG_YEAR_VALUE);
+        book.setGenre(STRING_WITH_40_CHARS);
+        book.setYear(WRONG_YEAR);
         Set<ConstraintViolation<Book>> violations = validator.validate(book);
         assertThat("All length and range constraints are violated!", violations, hasSize(4));
     }
@@ -50,7 +51,7 @@ public class BookFieldsValidationTest {
         book.setName(ALLOWED_NAME);
         book.setYear(ALLOWED_YEAR);
         book.setAuthor(ALLOWED_AUTHOR);
-        book.setGenre(Enum.valueOf(BookGenres.class, ALLOWED_GENRE));
+        book.setGenre(ALLOWED_GENRE);
         Set<ConstraintViolation<Book>> violations = validator.validate(book);
         assertThat("Passed all validations!", violations, hasSize(0));
     }

@@ -1,9 +1,10 @@
-package md.dbalutsel.BookStore;
+package md.dbalutsel.bookstore;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages =
+		"md.dbalutsel.bookstore")
 public class BookStoreApplication {
 
 	public static void main(String[] args) {
