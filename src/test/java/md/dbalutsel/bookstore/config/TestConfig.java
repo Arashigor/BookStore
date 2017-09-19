@@ -3,6 +3,7 @@ package md.dbalutsel.bookstore.config;
 import md.dbalutsel.bookstore.dao.BookDao;
 import md.dbalutsel.bookstore.dao.BookDaoImpl;
 import md.dbalutsel.bookstore.model.Book;
+import md.dbalutsel.bookstore.model.User;
 import md.dbalutsel.bookstore.service.BookService;
 import md.dbalutsel.bookstore.service.BookServiceImp;
 import org.springframework.context.annotation.Bean;
@@ -29,5 +30,10 @@ public class TestConfig {
     @Bean
     public BookDao bookDao() {
         return new BookDaoImpl();
+    }
+
+    @Bean
+    public User user() {
+        return new User();
     }
 }

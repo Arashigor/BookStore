@@ -33,6 +33,8 @@ dependencies {
 	compile 'org.springframework:spring-orm:4.2.5.RELEASE'
 	compile 'org.hibernate:hibernate-core:5.2.1.Final'
 
+	compile group: 'org.springframework.security', name: 'spring-security-core', version: '4.2.3.RELEASE'
+
 	runtime('org.postgresql:postgresql')
 
 	runtime('org.springframework.boot:spring-boot-devtools')

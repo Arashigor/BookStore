@@ -2,13 +2,16 @@ package md.dbalutsel.bookstore.service;
 
 import md.dbalutsel.bookstore.model.Book;
 import org.hibernate.HibernateException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
-@Transactional(rollbackFor = HibernateException.class, readOnly = true, propagation = Propagation.REQUIRES_NEW)
+@Transactional(rollbackFor = {HibernateException.class, DataIntegrityViolationException.class},
+        readOnly = true,
+        propagation = Propagation.REQUIRES_NEW)
 public interface BookService {
 
     List<Book> findAll();

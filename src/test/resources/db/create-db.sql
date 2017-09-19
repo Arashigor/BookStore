@@ -6,3 +6,8 @@ CREATE TABLE bookstore.books (
   year INT,
   genre VARCHAR(30)
 );
+CREATE TABLE bookstore.users (
+  id int PRIMARY KEY AUTO_INCREMENT,
+  login VARCHAR(30),
+  password VARCHAR(60)
+);
