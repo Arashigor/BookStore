@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.*;
 
 @RestController
 public class UserController {
@@ -16,9 +16,14 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/users")
+    @PostMapping("/users/new")
     public ResponseEntity<?> registerUser(@RequestBody User user) {
         userService.register(user);
         return new ResponseEntity<>(CREATED);
+    }
+
+    @PostMapping("/users")
+    public ResponseEntity<?> verifyUser(@RequestBody User user) {
+        return userService.login(user) ? new ResponseEntity<>(OK) : new ResponseEntity<>(NOT_FOUND);
     }
 }

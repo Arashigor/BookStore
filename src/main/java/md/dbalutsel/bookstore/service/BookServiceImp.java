@@ -5,8 +5,8 @@ import md.dbalutsel.bookstore.model.Book;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.rmi.NoSuchObjectException;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class BookServiceImp implements BookService {
@@ -20,7 +20,7 @@ public class BookServiceImp implements BookService {
     }
 
     @Override
-    public Optional<Book> findById(Integer id) {
+    public Book findById(Integer id) throws NoSuchObjectException {
         return bookDao.findById(id);
     }
 
@@ -35,7 +35,7 @@ public class BookServiceImp implements BookService {
     }
 
     @Override
-    public Optional<Book> findByName(String name) {
+    public Book findByName(String name) {
         return bookDao.findByName(name);
     }
 

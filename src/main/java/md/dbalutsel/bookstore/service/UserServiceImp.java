@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 
 @Service
 public class UserServiceImp implements UserService {
@@ -24,6 +25,7 @@ public class UserServiceImp implements UserService {
 
     @Override
     public Boolean login(User user) {
-        return null;
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return Objects.nonNull(userDao.verify(user));
     }
 }

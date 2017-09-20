@@ -20,8 +20,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.util.NestedServletException;
 
+import javax.persistence.NoResultException;
+import java.rmi.NoSuchObjectException;
 import java.util.Collections;
-import java.util.Optional;
 
 import static md.dbalutsel.bookstore.data.Constants.*;
 import static org.hamcrest.Matchers.is;
@@ -92,7 +93,7 @@ public class BookStoreControllerTest {
 
     @Test
     public void getBookByIdOkTest() throws Exception {
-        when(bookService.findById(ALLOWED_ID)).thenReturn(Optional.of(book));
+        when(bookService.findById(ALLOWED_ID)).thenReturn(book);
 
         mockMvc.perform(get("/books/" + ALLOWED_ID))
                 .andDo(print())
@@ -109,9 +110,9 @@ public class BookStoreControllerTest {
         verifyNoMoreInteractions(bookService);
     }
 
-    @Test
+    @Test(expected = NoSuchObjectException.class)
     public void getBookByIdNotFoundTest() throws Exception {
-        when(bookService.findById(WRONG_ID)).thenReturn(Optional.empty());
+        when(bookService.findById(WRONG_ID)).thenThrow(new NoSuchObjectException("Nothing found"));
 
         mockMvc.perform(get("/books/" + WRONG_ID))
                 .andDo(print())
@@ -124,7 +125,7 @@ public class BookStoreControllerTest {
 
     @Test
     public void getBookByNameOKTest() throws Exception {
-        when(bookService.findByName(ALLOWED_NAME)).thenReturn(Optional.of(book));
+        when(bookService.findByName(ALLOWED_NAME)).thenReturn(book);
 
         mockMvc.perform(get("/books/").param("name",ALLOWED_NAME))
                 .andDo(print())
@@ -141,9 +142,9 @@ public class BookStoreControllerTest {
         verifyNoMoreInteractions(bookService);
     }
 
-    @Test
+    @Test(expected = NestedServletException.class)
     public void getBookByNameNotFoundTest() throws Exception {
-        when(bookService.findByName(WRONG_NAME)).thenReturn(Optional.empty());
+        when(bookService.findByName(WRONG_NAME)).thenThrow(new NoResultException("Nothing found"));
 
         mockMvc.perform(get("/books/").param("name",WRONG_NAME))
                 .andDo(print())

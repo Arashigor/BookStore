@@ -1,5 +1,6 @@
 package md.dbalutsel.bookstore.model;
 
+import org.hibernate.annotations.Proxy;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -7,6 +8,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(schema = "bookstore", name = "users")
+@Proxy(lazy = false)
 public class User {
 
     @Id
