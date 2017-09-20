@@ -8,5 +8,5 @@ import org.springframework.transaction.annotation.Transactional;
         propagation = Propagation.REQUIRES_NEW)
 public interface UserService {
     Integer register(User user);
-    Boolean login(User user);
+    User login(String login);
 }

@@ -34,7 +34,7 @@ dependencies {
 	compile 'org.hibernate:hibernate-core:5.2.1.Final'
 
 	compile 'org.springframework.security:spring-security-core:4.2.3.RELEASE'
-	// compile 'org.springframework.boot:spring-boot-starter-security'
+	//compile 'org.springframework.boot:spring-boot-starter-security'
 
 	runtime 'org.postgresql:postgresql'
 

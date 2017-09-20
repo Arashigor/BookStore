@@ -16,14 +16,10 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/users/new")
-    public ResponseEntity<?> registerUser(@RequestBody User user) {
+    @PostMapping("/users")
+    public ResponseEntity<User> registration(@RequestBody User user) {
         userService.register(user);
-        return new ResponseEntity<>(CREATED);
+        return new ResponseEntity<>(user, CREATED);
     }
 
-    @PostMapping("/users")
-    public ResponseEntity<?> verifyUser(@RequestBody User user) {
-        return userService.login(user) ? new ResponseEntity<>(OK) : new ResponseEntity<>(NOT_FOUND);
-    }
 }
