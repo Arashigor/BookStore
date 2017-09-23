@@ -6,6 +6,8 @@ public class Constants {
     public final static String BAD_REQUEST_DATA_MSG = "Sorry, your request data cant be saved :(";
     public final static String NO_DATA_MSG = "Sorry, no data found :(";
 
+    public final static String ACCESS_RESTRICTED_MSG = "Sorry, You have no access to this resource :(";
+
     public final static String ADMIN_ROLE = "ADMIN";
     public final static String USER_ROLE = "USER";
 }

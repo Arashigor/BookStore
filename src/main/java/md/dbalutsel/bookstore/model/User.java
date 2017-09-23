@@ -23,8 +23,8 @@ public class User implements UserDetails {
     @Column(name = "id")
     private Integer id;
 
-    @NotNull(message = "{category.users.login.NotNull}")
-    @Length(min = 4, max = 30, message = "{category.users.login.Length}")
+    @NotNull(message = "{category.users.username.NotNull}")
+    @Length(min = 4, max = 30, message = "{category.users.username.Length}")
     @Column(name = "username", columnDefinition = "char(30)")
     private String username;
 
