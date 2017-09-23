@@ -9,7 +9,7 @@ import java.rmi.NoSuchObjectException;
 import java.util.List;
 
 @Service
-public class BookServiceImp implements BookService {
+public class BookServiceImpl implements BookService {
 
     @Autowired
     private BookDao bookDao;

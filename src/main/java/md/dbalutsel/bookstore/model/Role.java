@@ -14,14 +14,14 @@ public class Role {
     private Integer id;
 
     @Column(name = "name", columnDefinition = "char(25)")
-    private String string;
+    private String name;
 
     public Role() {
     }
 
-    public Role(Integer id, String string) {
+    public Role(Integer id, String name) {
         this.id = id;
-        this.string = string;
+        this.name = name;
     }
 
     public Integer getId() {
@@ -32,12 +32,12 @@ public class Role {
         this.id = id;
     }
 
-    public String getString() {
-        return string;
+    public String getName() {
+        return name;
     }
 
-    public void setString(String string) {
-        this.string = string;
+    public void setName(String string) {
+        this.name = string;
     }
 
     @Override
@@ -48,13 +48,13 @@ public class Role {
         Role role = (Role) o;
 
         if (getId() != null ? !getId().equals(role.getId()) : role.getId() != null) return false;
-        return getString() != null ? getString().equals(role.getString()) : role.getString() == null;
+        return getName() != null ? getName().equals(role.getName()) : role.getName() == null;
     }
 
     @Override
     public int hashCode() {
         int result = getId() != null ? getId().hashCode() : 0;
-        result = 31 * result + (getString() != null ? getString().hashCode() : 0);
+        result = 31 * result + (getName() != null ? getName().hashCode() : 0);
         return result;
     }
 
@@ -62,7 +62,7 @@ public class Role {
     public String toString() {
         return "Role{" +
                 "id=" + id +
-                ", string='" + string + '\'' +
+                ", string='" + name + '\'' +
                 '}';
     }
 }

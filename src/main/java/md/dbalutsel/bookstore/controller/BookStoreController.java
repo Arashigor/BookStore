@@ -4,6 +4,7 @@ import md.dbalutsel.bookstore.model.Book;
 import md.dbalutsel.bookstore.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.rmi.NoSuchObjectException;
@@ -64,5 +65,14 @@ public class BookStoreController {
     public ResponseEntity<String> deleteBook(@PathVariable(name = "id") Integer id) {
         return (bookService.delete(id)==1) ? new ResponseEntity<>(NO_CONTENT)
                 : new ResponseEntity<>(NO_DATA_MSG, NOT_FOUND);
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    @PreAuthorize("hasAnyRole('USER, ADMIN')")
+    @GetMapping("/books/my")
+    public ResponseEntity<?> getMyBooks() {
+        /////TODO REPLACE WITH users books
+        List<Book> books = bookService.findAll();
+        return (books.isEmpty()) ? new ResponseEntity<>(NO_DATA_MSG, NOT_FOUND) : new ResponseEntity<>(books, OK);
     }
 }

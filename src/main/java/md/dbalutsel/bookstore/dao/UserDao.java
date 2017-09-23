@@ -4,5 +4,5 @@ import md.dbalutsel.bookstore.model.User;
 
 public interface UserDao {
     Integer save(User user);
-    User findByLogin(String user);
+    User findByUsername(String username);
 }

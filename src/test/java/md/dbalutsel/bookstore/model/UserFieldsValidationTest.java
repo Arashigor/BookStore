@@ -28,7 +28,7 @@ public class UserFieldsValidationTest {
 
     @Test
     public void ShouldFailUserNullAndEmptyFieldsValidationTest() {
-        user.setLogin(null);
+        user.setUsername(null);
         user.setPassword(null);
         user.setEmail(null);
         Set<ConstraintViolation<User>> violations = validator.validate(user);
@@ -37,7 +37,7 @@ public class UserFieldsValidationTest {
 
     @Test
     public void ShouldFailUserLengthValidationTest() {
-        user.setLogin(STRING_WITH_40_CHARS);
+        user.setUsername(STRING_WITH_40_CHARS);
         user.setPassword(STRING_WITH_40_CHARS);
         user.setEmail(STRING_WITH_40_CHARS+STRING_WITH_40_CHARS);
         Set<ConstraintViolation<User>> violations = validator.validate(user);
@@ -46,7 +46,7 @@ public class UserFieldsValidationTest {
 
     @Test
     public void ShouldPassAllValidations() {
-        user.setLogin(ALLOWED_LOGIN);
+        user.setUsername(ALLOWED_LOGIN);
         user.setPassword(ALLOWED_PASSWORD);
         user.setEmail(ALLOWED_EMAIL);
         Set<ConstraintViolation<User>> violations = validator.validate(user);

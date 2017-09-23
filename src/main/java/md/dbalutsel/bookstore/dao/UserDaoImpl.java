@@ -18,9 +18,9 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User findByLogin(String login) {
-        return session.createQuery("from User where login=:login and password=:password", User.class)
-                .setParameter("login", login)
+    public User findByUsername(String username) {
+        return session.createQuery("from User where username=:username", User.class)
+                .setParameter("username", username)
                 .getSingleResult();
     }
 }

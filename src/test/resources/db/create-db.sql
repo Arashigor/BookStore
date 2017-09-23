@@ -14,5 +14,12 @@ CREATE TABLE bookstore.users (
 );
 CREATE TABLE bookstore.roles (
   id INT PRIMARY KEY AUTO_INCREMENT,
-  name VARCHAR(25)
+  name VARCHAR(25) UNIQUE
+);
+CREATE TABLE bookstore.usersroles (
+  user_id INTEGER NOT NULL,
+  role_id INTEGER NOT NULL,
+  CONSTRAINT pk PRIMARY KEY (user_id,role_id),
+  CONSTRAINT fk_role_id FOREIGN KEY (role_id) REFERENCES bookstore.roles(id),
+  CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES bookstore.users(id)
 );

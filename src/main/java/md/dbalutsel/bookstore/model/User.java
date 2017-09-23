@@ -1,17 +1,22 @@
 package md.dbalutsel.bookstore.model;
 
 import org.hibernate.annotations.Proxy;
-import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Collection;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(schema = "bookstore", name = "users")
 @Proxy(lazy = false)
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,11 +25,11 @@ public class User {
 
     @NotNull(message = "{category.users.login.NotNull}")
     @Length(min = 4, max = 30, message = "{category.users.login.Length}")
-    @Column(name = "login", columnDefinition = "char(30)")
-    private String login;
+    @Column(name = "username", columnDefinition = "char(30)")
+    private String username;
 
     @NotNull(message = "{category.users.password.NotNull}")
-    @Length(min = 5, max = 20, message = "{category.users.password.Length}")
+    @Length(min = 5, max = 60, message = "{category.users.password.Length}")
     @Column(name = "password", columnDefinition = "char(60)")
     private String password;
 
@@ -33,11 +38,16 @@ public class User {
     @NotEmpty(message = "{category.users.email.NotEmpty}")
     private String email;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(schema = "bookstore", name = "usersroles",
+                joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles;
+
     public User() {
     }
 
-    public User(String login, String password, String email) {
-        this.login = login;
+    public User(String username, String password, String email) {
+        this.username = username;
         this.password = password;
         this.email = email;
     }
@@ -50,12 +60,12 @@ public class User {
         this.id = id;
     }
 
-    public String getLogin() {
-        return login;
+    public String getUsername() {
+        return username;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setUsername(String login) {
+        this.username = login;
     }
 
     public String getPassword() {
@@ -74,6 +84,21 @@ public class User {
         this.email = email;
     }
 
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return getRoles().stream()
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getName()))
+                .collect(Collectors.toList());
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -82,7 +107,7 @@ public class User {
         User user = (User) o;
 
         if (getId() != null ? !getId().equals(user.getId()) : user.getId() != null) return false;
-        if (getLogin() != null ? !getLogin().equals(user.getLogin()) : user.getLogin() != null) return false;
+        if (getUsername() != null ? !getUsername().equals(user.getUsername()) : user.getUsername() != null) return false;
         if (getPassword() != null ? !getPassword().equals(user.getPassword()) : user.getPassword() != null)
             return false;
         return getEmail() != null ? getEmail().equals(user.getEmail()) : user.getEmail() == null;
@@ -91,7 +116,7 @@ public class User {
     @Override
     public int hashCode() {
         int result = getId() != null ? getId().hashCode() : 0;
-        result = 31 * result + (getLogin() != null ? getLogin().hashCode() : 0);
+        result = 31 * result + (getUsername() != null ? getUsername().hashCode() : 0);
         result = 31 * result + (getPassword() != null ? getPassword().hashCode() : 0);
         result = 31 * result + (getEmail() != null ? getEmail().hashCode() : 0);
         return result;
@@ -101,9 +126,30 @@ public class User {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", login='" + login + '\'' +
+                ", login='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 '}';
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }
