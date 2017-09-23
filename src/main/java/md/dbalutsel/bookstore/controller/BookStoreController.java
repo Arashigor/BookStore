@@ -2,13 +2,16 @@ package md.dbalutsel.bookstore.controller;
 
 import md.dbalutsel.bookstore.model.Book;
 import md.dbalutsel.bookstore.service.BookService;
+import md.dbalutsel.bookstore.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.rmi.NoSuchObjectException;
+import java.security.Principal;
 import java.util.List;
+import java.util.logging.Logger;
 
 import static md.dbalutsel.bookstore.data.Constants.NO_DATA_MSG;
 import static org.springframework.http.HttpStatus.*;
@@ -18,6 +21,9 @@ public class BookStoreController {
 
     @Autowired
     private BookService bookService;
+
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/books")
     public ResponseEntity<?> getAllBooks() {
@@ -69,8 +75,8 @@ public class BookStoreController {
 
     @PreAuthorize("hasAnyRole('USER, ADMIN')")
     @GetMapping("/books/my")
-    public ResponseEntity<?> getMyBooks() {
-        List<Book> books = bookService.findAll();
+    public ResponseEntity<?> getMyBooks(Principal principal) {
+        List<Book> books = userService.findAllUserBooks(principal.getName());
         return (books.isEmpty()) ? new ResponseEntity<>(NO_DATA_MSG, NOT_FOUND) : new ResponseEntity<>(books, OK);
     }
 }

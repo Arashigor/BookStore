@@ -2,6 +2,7 @@ package md.dbalutsel.bookstore.service;
 
 import md.dbalutsel.bookstore.dao.RoleDao;
 import md.dbalutsel.bookstore.dao.UserDao;
+import md.dbalutsel.bookstore.model.Book;
 import md.dbalutsel.bookstore.model.Role;
 import md.dbalutsel.bookstore.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.logging.Logger;
 
 import static md.dbalutsel.bookstore.data.Constants.USER_ROLE;
@@ -37,6 +39,11 @@ public class UserServiceImpl implements UserService {
         user.setRoles(new HashSet<>(Collections.singletonList(role)));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userDao.save(user);
+    }
+
+    @Override
+    public List<Book> findAllUserBooks(String username) {
+        return userDao.findAllUserBooks(username);
     }
 
     @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
