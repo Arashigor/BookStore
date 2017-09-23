@@ -42,7 +42,6 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Logger.getLogger(">").warning(String.valueOf(TransactionSynchronizationManager.isActualTransactionActive()));
         return userDao.findByUsername(username);
     }
 }

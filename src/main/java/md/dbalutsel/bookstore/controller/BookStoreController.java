@@ -67,11 +67,9 @@ public class BookStoreController {
                 : new ResponseEntity<>(NO_DATA_MSG, NOT_FOUND);
     }
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @PreAuthorize("hasAnyRole('USER, ADMIN')")
     @GetMapping("/books/my")
     public ResponseEntity<?> getMyBooks() {
-        /////TODO REPLACE WITH users books
         List<Book> books = bookService.findAll();
         return (books.isEmpty()) ? new ResponseEntity<>(NO_DATA_MSG, NOT_FOUND) : new ResponseEntity<>(books, OK);
     }

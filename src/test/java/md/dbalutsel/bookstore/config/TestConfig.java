@@ -5,7 +5,7 @@ import md.dbalutsel.bookstore.dao.BookDaoImpl;
 import md.dbalutsel.bookstore.model.Book;
 import md.dbalutsel.bookstore.model.User;
 import md.dbalutsel.bookstore.service.BookService;
-import md.dbalutsel.bookstore.service.BookServiceImp;
+import md.dbalutsel.bookstore.service.BookServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
@@ -24,7 +24,7 @@ public class TestConfig {
 
     @Bean
     public BookService bookService() {
-        return new BookServiceImp();
+        return new BookServiceImpl();
     }
 
     @Bean

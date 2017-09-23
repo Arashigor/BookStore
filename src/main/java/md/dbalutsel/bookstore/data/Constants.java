@@ -7,6 +7,7 @@ public class Constants {
     public final static String NO_DATA_MSG = "Sorry, no data found :(";
 
     public final static String ACCESS_RESTRICTED_MSG = "Sorry, You have no access to this resource :(";
+    public final static String UNAUTHORIZED_MSG = "Sorry, we can't authorize you :(";
 
     public final static String ADMIN_ROLE = "ADMIN";
     public final static String USER_ROLE = "USER";
