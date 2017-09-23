@@ -33,14 +33,15 @@ public class UserFieldsValidationTest {
     public void ShouldFailUserNullAndEmptyFieldsValidationTest() {
         user.setLogin(null);
         user.setPassword(null);
+        user.setPassword(null);
         Set<ConstraintViolation<User>> violations = validator.validate(user);
-        assertThat("All empty and null constraints are violated!", violations, hasSize(2));
+        assertThat("All empty and null constraints are violated!", violations, hasSize(3));
     }
 
     @Test
     public void ShouldFailUserLengthValidationTest() {
         user.setLogin(STRING_WITH_40_CHARS);
-        user.setPassword(anyString());
+        user.setPassword(STRING_WITH_40_CHARS);
         Set<ConstraintViolation<User>> violations = validator.validate(user);
         assertThat("All length and range constraints are violated!", violations, hasSize(1));
     }

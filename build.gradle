@@ -30,11 +30,14 @@ repositories {
 dependencies {
 	compile 'org.springframework.boot:spring-boot-starter-web'
 
+	compile 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
 	compile 'org.springframework:spring-orm:4.2.5.RELEASE'
 	compile 'org.hibernate:hibernate-core:5.2.1.Final'
 
-	compile 'org.springframework.security:spring-security-core:4.2.3.RELEASE'
-	//compile 'org.springframework.boot:spring-boot-starter-security'
+	compile 'org.springframework.boot:spring-boot-starter-security'
+
+	compile 'net.sourceforge.nekohtml:nekohtml:1.9.13'
 
 	runtime 'org.postgresql:postgresql'
 

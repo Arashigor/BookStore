@@ -1,7 +1,9 @@
 package md.dbalutsel.bookstore.model;
 
 import org.hibernate.annotations.Proxy;
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -25,12 +27,18 @@ public class User {
     @Column(name = "password", columnDefinition = "char(60)")
     private String password;
 
+    @Email(message = "{category.users.email")
+    @NotNull(message = "{category.users.email.NotNull")
+    @NotEmpty(message = "{category.users.email.NotEmpty")
+    private String email;
+
     public User() {
     }
 
-    public User(String login, String password) {
+    public User(String login, String password, String email) {
         this.login = login;
         this.password = password;
+        this.email = email;
     }
 
     public Integer getId() {
@@ -57,6 +65,14 @@ public class User {
         this.password = password;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -66,7 +82,9 @@ public class User {
 
         if (getId() != null ? !getId().equals(user.getId()) : user.getId() != null) return false;
         if (getLogin() != null ? !getLogin().equals(user.getLogin()) : user.getLogin() != null) return false;
-        return getPassword() != null ? getPassword().equals(user.getPassword()) : user.getPassword() == null;
+        if (getPassword() != null ? !getPassword().equals(user.getPassword()) : user.getPassword() != null)
+            return false;
+        return getEmail() != null ? getEmail().equals(user.getEmail()) : user.getEmail() == null;
     }
 
     @Override
@@ -74,6 +92,7 @@ public class User {
         int result = getId() != null ? getId().hashCode() : 0;
         result = 31 * result + (getLogin() != null ? getLogin().hashCode() : 0);
         result = 31 * result + (getPassword() != null ? getPassword().hashCode() : 0);
+        result = 31 * result + (getEmail() != null ? getEmail().hashCode() : 0);
         return result;
     }
 
@@ -83,6 +102,7 @@ public class User {
                 "id=" + id +
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
                 '}';
     }
 }
