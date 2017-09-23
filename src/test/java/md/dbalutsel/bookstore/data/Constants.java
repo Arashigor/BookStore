@@ -15,4 +15,7 @@ public class Constants {
 
     public static final String ALLOWED_LOGIN = "ALLOWED_LOGIN";
     public static final String ALLOWED_PASSWORD = "12345";
+
+    public static final String ALLOWED_EMAIL = "text@gmail.com";
+    public static final String WRONG_EMAIL = "@text@text.com@";
 }

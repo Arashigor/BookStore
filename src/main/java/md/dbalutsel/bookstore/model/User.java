@@ -24,12 +24,13 @@ public class User {
     private String login;
 
     @NotNull(message = "{category.users.password.NotNull}")
+    @Length(min = 5, max = 20, message = "{category.users.password.Length}")
     @Column(name = "password", columnDefinition = "char(60)")
     private String password;
 
-    @Email(message = "{category.users.email")
-    @NotNull(message = "{category.users.email.NotNull")
-    @NotEmpty(message = "{category.users.email.NotEmpty")
+    @Length(max = 40, message = "{category.users.email.Length}")
+    @NotNull(message = "{category.users.email.NotNull}")
+    @NotEmpty(message = "{category.users.email.NotEmpty}")
     private String email;
 
     public User() {

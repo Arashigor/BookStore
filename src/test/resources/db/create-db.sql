@@ -12,3 +12,7 @@ CREATE TABLE bookstore.users (
   password VARCHAR(60),
   email VARCHAR(255)
 );
+CREATE TABLE bookstore.roles (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(25)
+);
