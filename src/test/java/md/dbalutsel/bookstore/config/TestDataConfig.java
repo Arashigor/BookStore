@@ -47,7 +47,8 @@ public class TestDataConfig {
         return builder
                 .setType(EmbeddedDatabaseType.H2)
                 .addScript("db/create-db.sql")
-                .addScript("db/insert-data.sql")
+                .addScript("db/insert-book-data.sql")
+                .addScript("db/insert-user-data.sql")
                 .build();
     }
 }

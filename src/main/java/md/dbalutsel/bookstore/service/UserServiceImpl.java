@@ -12,12 +12,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
 
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.logging.Logger;
 
 import static md.dbalutsel.bookstore.data.Constants.USER_ROLE;
 
@@ -36,7 +32,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Integer save(User user) {
         Role role = roleDao.findByRole(USER_ROLE);
-        user.setRoles(new HashSet<>(Collections.singletonList(role)));
+        user.setRoles(role);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userDao.save(user);
     }

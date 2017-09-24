@@ -31,7 +31,7 @@ public class UserDaoImpl implements UserDao {
         User queriedUser = session.createQuery("from User where username=:username", User.class)
                 .setParameter("username", username)
                 .getSingleResult();
-        
+
         return queriedUser.getBooks();
     }
 }

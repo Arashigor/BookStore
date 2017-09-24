@@ -2,6 +2,7 @@ package md.dbalutsel.bookstore.service;
 
 import md.dbalutsel.bookstore.config.TestConfig;
 import md.dbalutsel.bookstore.config.TestDataConfig;
+import md.dbalutsel.bookstore.config.TestSecurityConfig;
 import md.dbalutsel.bookstore.model.Book;
 
 import org.hibernate.ObjectNotFoundException;
@@ -24,8 +25,8 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {TestConfig.class, TestDataConfig.class})
-@Sql(executionPhase= Sql.ExecutionPhase.BEFORE_TEST_METHOD,scripts="classpath:/db/insert-data.sql")
+@ContextConfiguration(classes = {TestConfig.class, TestDataConfig.class, TestSecurityConfig.class})
+@Sql(executionPhase= Sql.ExecutionPhase.BEFORE_TEST_METHOD,scripts= "classpath:/db/insert-book-data.sql")
 public class BookServiceTest {
 
     @Autowired

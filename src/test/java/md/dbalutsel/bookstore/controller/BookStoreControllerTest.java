@@ -3,8 +3,10 @@ package md.dbalutsel.bookstore.controller;
 import com.google.gson.Gson;
 import md.dbalutsel.bookstore.config.TestConfig;
 import md.dbalutsel.bookstore.config.TestDataConfig;
+import md.dbalutsel.bookstore.config.TestSecurityConfig;
 import md.dbalutsel.bookstore.model.Book;
 import md.dbalutsel.bookstore.service.BookService;
+import md.dbalutsel.bookstore.service.UserService;
 import org.hibernate.HibernateException;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,36 +24,47 @@ import org.springframework.web.util.NestedServletException;
 
 import javax.persistence.NoResultException;
 import java.rmi.NoSuchObjectException;
+import java.security.Principal;
 import java.util.Collections;
 
 import static md.dbalutsel.bookstore.data.Constants.*;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.*;
+
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {TestConfig.class, TestDataConfig.class})
+@ContextConfiguration(classes = {TestConfig.class, TestDataConfig.class, TestSecurityConfig.class})
 public class BookStoreControllerTest {
+
+    private MockMvc mockMvc;
 
     @InjectMocks
     private BookStoreController bookStoreController;
 
     @Mock
+    private Principal principal;
+
+    @Mock
     private BookService bookService;
 
-    private MockMvc mockMvc;
+    @Mock
+    private UserService userService;
 
     @Autowired
-    Book book;
+    private Book book;
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        this.mockMvc = MockMvcBuilders.standaloneSetup(bookStoreController).build();
+        this.mockMvc = MockMvcBuilders
+                .standaloneSetup(bookStoreController)
+                .build();
         book.setId(ALLOWED_ID);
         book.setName(ALLOWED_NAME);
         book.setAuthor(ALLOWED_AUTHOR);
@@ -256,6 +269,7 @@ public class BookStoreControllerTest {
         when(bookService.save(book)).thenReturn(anyInt());
 
         mockMvc.perform(post("/books").contentType(APPLICATION_JSON).content(new Gson().toJson(book)))
+                .andDo(print())
                 .andExpect(status().isCreated())
                 .andReturn();
 
@@ -302,5 +316,21 @@ public class BookStoreControllerTest {
 
         verify(bookService, times(1)).findAll();
         verifyNoMoreInteractions(bookService);
+    }
+
+    @Test
+    public void findAllUserBooksTest() throws Exception {
+        when(principal.getName()).thenReturn(ALLOWED_USERNAME);
+        when(userService.findAllUserBooks(ALLOWED_USERNAME)).thenReturn(Collections.emptyList());
+
+        mockMvc.perform(get("/books/my").principal(principal)
+                        .with(httpBasic(ALLOWED_USERNAME, ALLOWED_PASSWORD)))
+                .andExpect(status().isNotFound())
+                .andReturn();
+
+        verify(principal, times(2)).getName();
+        verifyNoMoreInteractions(principal);
+        verify(userService, times(1)).findAllUserBooks(ALLOWED_USERNAME);
+        verifyNoMoreInteractions(userService);
     }
 }

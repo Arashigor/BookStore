@@ -30,14 +30,10 @@ repositories {
 dependencies {
 	compile 'org.springframework.boot:spring-boot-starter-web'
 
-	compile 'org.springframework.boot:spring-boot-starter-thymeleaf'
-
 	compile 'org.springframework:spring-orm:4.2.5.RELEASE'
 	compile 'org.hibernate:hibernate-core:5.2.1.Final'
 
 	compile 'org.springframework.boot:spring-boot-starter-security'
-
-	compile 'net.sourceforge.nekohtml:nekohtml:1.9.13'
 
 	runtime 'org.postgresql:postgresql'
 
@@ -54,6 +50,8 @@ dependencies {
 	testCompile('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.hammcrest'
 	}
+
+	testCompile 'org.springframework.security:spring-security-test:4.2.3.RELEASE'
 
 	testCompile 'com.google.code.gson:gson:2.7'
 }
