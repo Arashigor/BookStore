@@ -64,8 +64,6 @@ public class UserControllerTest {
     @Test
     @Ignore
     public void userRegistrationTest() throws Exception {
-        when(userService.save(user)).thenReturn(anyInt());
-
         mockMvc.perform(post("/users").contentType(APPLICATION_JSON).content(new Gson().toJson(user)))
                 .andExpect(status().isCreated())
                 .andDo(print())

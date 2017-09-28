@@ -18,6 +18,7 @@ import java.util.List;
 import static md.dbalutsel.bookstore.data.Constants.USER_ROLE;
 
 @Service
+@Transactional(rollbackFor = Exception.class, readOnly = true)
 public class UserServiceImpl implements UserService {
 
     @Autowired
@@ -29,12 +30,13 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
-    public Integer save(User user) {
+    public void save(User user) {
         Role role = roleDao.findByRole(USER_ROLE);
         user.setRoles(role);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userDao.save(user);
+        userDao.save(user);
     }
 
     @Override
@@ -42,9 +44,8 @@ public class UserServiceImpl implements UserService {
         return userDao.findAllUserBooks(username);
     }
 
-    @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userDao.findByUsername(username);
+        return userDao.loadByUsername(username);
     }
 }

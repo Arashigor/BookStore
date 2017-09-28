@@ -8,19 +8,17 @@ import org.springframework.transaction.annotation.Transactional;
 import java.rmi.NoSuchObjectException;
 import java.util.List;
 
-@Transactional(rollbackFor = Exception.class,
-        readOnly = true,
-        propagation = Propagation.REQUIRES_NEW)
+@Transactional(rollbackFor = Exception.class, readOnly = true)
 public interface BookService {
 
     List<Book> findAll();
 
     Book findById(Integer id) throws NoSuchObjectException;
 
-    @Transactional(rollbackFor = HibernateException.class, propagation = Propagation.REQUIRES_NEW)
-    Integer save(Book book);
+    @Transactional(rollbackFor = Exception.class)
+    void save(Book book);
 
-    @Transactional(rollbackFor = HibernateException.class, propagation = Propagation.REQUIRES_NEW)
+    @Transactional(rollbackFor = Exception.class)
     Integer delete(Integer bookId);
 
     Book findByName(String name);

@@ -15,12 +15,12 @@ public class UserDaoImpl implements UserDao {
     private Session session;
 
     @Override
-    public Integer save(User user) {
-        return (Integer) session.save(user);
+    public void save(User user) {
+        session.save(user);
     }
 
     @Override
-    public User findByUsername(String username) {
+    public User loadByUsername(String username) {
         return session.createQuery("from User where username=:username", User.class)
                 .setParameter("username", username)
                 .getSingleResult();

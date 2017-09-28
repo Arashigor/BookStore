@@ -6,7 +6,7 @@ import md.dbalutsel.bookstore.model.User;
 import java.util.List;
 
 public interface UserDao {
-    Integer save(User user);
-    User findByUsername(String username);
+    void save(User user);
+    User loadByUsername(String username);
     List<Book> findAllUserBooks(String username);
 }

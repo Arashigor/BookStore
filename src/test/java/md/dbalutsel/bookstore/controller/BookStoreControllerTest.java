@@ -266,7 +266,6 @@ public class BookStoreControllerTest {
 
     @Test
     public void saveBookTest() throws Exception {
-        when(bookService.save(book)).thenReturn(anyInt());
 
         mockMvc.perform(post("/books").contentType(APPLICATION_JSON).content(new Gson().toJson(book)))
                 .andDo(print())

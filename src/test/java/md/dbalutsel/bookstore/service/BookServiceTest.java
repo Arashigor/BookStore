@@ -92,8 +92,7 @@ public class BookServiceTest {
     @Test
     public void saveTest() {
         Book bookToSave = new Book(ALLOWED_NAME, ALLOWED_AUTHOR, ALLOWED_YEAR, ALLOWED_GENRE);
-        Integer bookId = bookService.save(bookToSave);
-        assertThat("Should add one entry", bookId, is(1));
+        bookService.save(bookToSave);
     }
 
     @Test

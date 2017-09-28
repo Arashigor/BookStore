@@ -25,8 +25,8 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Integer save(Book book) {
-        return bookDao.save(book);
+    public void save(Book book) {
+         bookDao.save(book);
     }
 
     @Override

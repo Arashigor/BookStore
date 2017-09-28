@@ -1,6 +1,6 @@
 package md.dbalutsel.bookstore.controller.handlers;
 
-import md.dbalutsel.bookstore.model.handlers.ConstraintViolationExceptionResponse;
+import md.dbalutsel.bookstore.model.validators.ConstraintViolationExceptionResponse;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;

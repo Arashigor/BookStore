@@ -8,7 +8,7 @@ import java.util.List;
 public interface BookDao {
     List<Book> findAll();
     Book findById(Integer id) throws NoSuchObjectException;
-    Integer save(Book book);
+    void save(Book book);
     Integer delete(Integer bookId);
     Book findByName(String name);
     List<Book> findByAuthor(String name);

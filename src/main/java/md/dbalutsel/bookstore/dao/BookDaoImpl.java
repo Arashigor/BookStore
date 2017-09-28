@@ -26,8 +26,8 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public Integer save(Book book) {
-        return (Integer) session.save(book);
+    public void save(Book book) {
+        session.save(book);
     }
 
     @Override

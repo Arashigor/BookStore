@@ -1,5 +1,6 @@
 package md.dbalutsel.bookstore.model;
 
+import md.dbalutsel.bookstore.model.validators.Unique;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.core.GrantedAuthority;
@@ -25,7 +26,8 @@ public class User implements UserDetails {
 
     @NotNull(message = "{category.users.username.NotNull}")
     @Length(min = 4, max = 30, message = "{category.users.username.Length}")
-    @Column(name = "username", columnDefinition = "char(30)")
+    @Column(name = "username", columnDefinition = "char(30)", unique = true)
+    @Unique(message = "{category.users.username.Unique}", entityType = User.class, property = "username")
     private String username;
 
     @NotNull(message = "{category.users.password.NotNull}")
@@ -36,6 +38,8 @@ public class User implements UserDetails {
     @Length(max = 40, message = "{category.users.email.Length}")
     @NotNull(message = "{category.users.email.NotNull}")
     @NotEmpty(message = "{category.users.email.NotEmpty}")
+    @Column(name = "email", columnDefinition = "char(255)", unique = true)
+    @Unique(message = "{category.users.email.Unique}", entityType = User.class, property = "email")
     private String email;
 
     @ManyToMany(fetch = EAGER)

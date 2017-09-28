@@ -6,8 +6,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import java.util.Arrays;
-
 import static md.dbalutsel.bookstore.data.Constants.ACCESS_RESTRICTED_MSG;
 import static md.dbalutsel.bookstore.data.Constants.UNAUTHORIZED_MSG;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
