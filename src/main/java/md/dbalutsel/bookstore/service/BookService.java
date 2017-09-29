@@ -5,23 +5,23 @@ import org.hibernate.HibernateException;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.rmi.NoSuchObjectException;
 import java.util.List;
-import java.util.Optional;
 
-@Transactional(rollbackFor = HibernateException.class, readOnly = true, propagation = Propagation.REQUIRES_NEW)
+@Transactional(rollbackFor = Exception.class, readOnly = true)
 public interface BookService {
 
     List<Book> findAll();
 
-    Optional<Book> findById(Integer id);
+    Book findById(Integer id) throws NoSuchObjectException;
 
-    @Transactional(rollbackFor = HibernateException.class, propagation = Propagation.REQUIRES_NEW)
-    Integer save(Book book);
+    @Transactional(rollbackFor = Exception.class)
+    void save(Book book);
 
-    @Transactional(rollbackFor = HibernateException.class, propagation = Propagation.REQUIRES_NEW)
+    @Transactional(rollbackFor = Exception.class)
     Integer delete(Integer bookId);
 
-    Optional<Book> findByName(String name);
+    Book findByName(String name);
 
     List<Book> findByAuthor(String name);
 

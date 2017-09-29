@@ -12,4 +12,12 @@ public class Constants {
     public static final String ALLOWED_AUTHOR = "AUTHOR";
     public static final Integer WRONG_YEAR = 9999;
     public static final Integer ALLOWED_YEAR = 2017;
+
+    public static final String ALLOWED_USERNAME = "ALLOWED_USERNAME";
+    public static final String WRONG_USERNAME = "WRONG_USERNAME";
+    public static final String ALLOWED_PASSWORD = "12345";
+    public static final String USER_ROLE = "USER";
+
+    public static final String ALLOWED_EMAIL = "text@gmail.com";
+    public static final String WRONG_EMAIL = "@text@text.com@";
 }

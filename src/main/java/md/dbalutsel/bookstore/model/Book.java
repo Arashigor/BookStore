@@ -1,5 +1,8 @@
 package md.dbalutsel.bookstore.model;
 
+import md.dbalutsel.bookstore.model.validators.Unique;
+import org.hibernate.annotations.Proxy;
+
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;
@@ -9,6 +12,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(schema = "bookstore", name = "books")
+@Proxy(lazy = false)
 public class Book {
 
     @Id
@@ -16,26 +20,27 @@ public class Book {
     private Integer id;
 
     @Column(name = "name", columnDefinition = "char(30)")
-    @Length(max = 30, message = "{category.name.Length}")
-    @NotEmpty(message = "{category.name.NotEmpty}")
-    @NotNull(message = "{category.name.NotNull}")
+    @Length(max = 30, message = "{category.books.name.Length}")
+    @NotEmpty(message = "{category.books.name.NotEmpty}")
+    @NotNull(message = "{category.books.name.NotNull}")
+    @Unique(message = "{category.books.name.Unique}", entityType = Book.class, property = "name")
     private String name;
 
     @Column(name = "author", columnDefinition = "char(30)")
-    @Length(max = 30, message = "{category.author.Length}")
-    @NotEmpty(message = "{category.author.NotEmpty}")
-    @NotNull(message = "{category.author.NotNull}")
+    @Length(max = 30, message = "{category.books.author.Length}")
+    @NotEmpty(message = "{category.books.author.NotEmpty}")
+    @NotNull(message = "{category.books.author.NotNull}")
     private String author;
 
     @Column(name = "year")
-    @Range(max = 2050, message = "{category.year.Range}")
-    @NotNull(message = "{category.year.NotNull}")
+    @Range(max = 2050, message = "{category.books.year.Range}")
+    @NotNull(message = "{category.books.year.NotNull}")
     private Integer year;
 
     @Column(name = "genre", columnDefinition = "char(30)")
-    @Length(max = 30, message = "{category.genre.Length}")
-    @NotEmpty(message = "{category.genre.NotEmpty}")
-    @NotNull(message = "{category.genre.NotNull}")
+    @Length(max = 30, message = "{category.books.genre.Length}")
+    @NotEmpty(message = "{category.books.genre.NotEmpty}")
+    @NotNull(message = "{category.books.genre.NotNull}")
     private String genre;
 
     public Book() {

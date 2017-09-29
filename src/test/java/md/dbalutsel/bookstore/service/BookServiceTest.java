@@ -2,7 +2,11 @@ package md.dbalutsel.bookstore.service;
 
 import md.dbalutsel.bookstore.config.TestConfig;
 import md.dbalutsel.bookstore.config.TestDataConfig;
+
+import md.dbalutsel.bookstore.config.TestSecurityConfig;
 import md.dbalutsel.bookstore.model.Book;
+
+import org.hibernate.ObjectNotFoundException;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,8 +15,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import javax.persistence.NoResultException;
+import javax.validation.ConstraintViolationException;
+import java.rmi.NoSuchObjectException;
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
 
 import static md.dbalutsel.bookstore.data.Constants.*;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -21,8 +28,8 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {TestConfig.class, TestDataConfig.class})
-@Sql(executionPhase= Sql.ExecutionPhase.BEFORE_TEST_METHOD,scripts="classpath:/db/insert-data.sql")
+@ContextConfiguration(classes = {TestConfig.class, TestDataConfig.class, TestSecurityConfig.class})
+@Sql(executionPhase= Sql.ExecutionPhase.BEFORE_TEST_METHOD,scripts= "classpath:/db/insert-book-data.sql")
 public class BookServiceTest {
 
     @Autowired
@@ -35,15 +42,25 @@ public class BookServiceTest {
     }
 
     @Test
-    public void findByIdTest() {
-        Optional<Book> bookOptional = bookService.findById(ALLOWED_ID);
-        assertTrue("Should get entity instance", bookOptional.isPresent());
+    public void findByIdTest() throws NoSuchObjectException {
+        Book book = bookService.findById(ALLOWED_ID);
+        assertTrue("Should get entity instance", Objects.nonNull(book));
+    }
+
+    @Test(expected = ObjectNotFoundException.class)
+    public void findByIdFailTest() throws NoSuchObjectException {
+        Book book = bookService.findById(WRONG_ID);
     }
 
     @Test
-    public void findByName() {
-        Optional<Book> bookOptional = bookService.findByName(ALLOWED_NAME);
-        assertTrue("Should get entity instance", bookOptional.isPresent());
+    public void findByNameTest() {
+        Book book = bookService.findByName(ALLOWED_NAME);
+        assertTrue("Should get entity instance", Objects.nonNull(book));
+    }
+
+    @Test(expected = NoResultException.class)
+    public void findByNameFailTest() {
+        Book book = bookService.findByName(WRONG_NAME);
     }
 
     @Test
@@ -66,8 +83,8 @@ public class BookServiceTest {
     }
 
     @Test
-    public void correctEntityFieldValuesTest() {
-        Book book = bookService.findById(ALLOWED_ID).orElse(new Book());
+    public void correctEntityFieldValuesTest() throws NoSuchObjectException {
+        Book book = bookService.findById(ALLOWED_ID);
 
         assertEquals("Should have correct id", book.getId(), ALLOWED_ID);
         assertEquals("Should have correct name", book.getName(), ALLOWED_NAME);
@@ -77,9 +94,14 @@ public class BookServiceTest {
 
     @Test
     public void saveTest() {
+        Book bookToSave = new Book(ALLOWED_NAME+ALLOWED_NAME, ALLOWED_AUTHOR, ALLOWED_YEAR, ALLOWED_GENRE);
+        bookService.save(bookToSave);
+    }
+
+    @Test(expected = ConstraintViolationException.class)
+    public void ShouldFailToSaveBecauseOfUniqueConstraintViolation() {
         Book bookToSave = new Book(ALLOWED_NAME, ALLOWED_AUTHOR, ALLOWED_YEAR, ALLOWED_GENRE);
-        Integer bookId = bookService.save(bookToSave);
-        assertThat("Should add one entry", bookId, is(1));
+        bookService.save(bookToSave);
     }
 
     @Test

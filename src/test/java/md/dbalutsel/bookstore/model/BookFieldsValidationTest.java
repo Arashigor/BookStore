@@ -2,6 +2,8 @@ package md.dbalutsel.bookstore.model;
 
 import md.dbalutsel.bookstore.config.TestConfig;
 import md.dbalutsel.bookstore.config.TestDataConfig;
+import md.dbalutsel.bookstore.config.TestSecurityConfig;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,14 +12,17 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import javax.validation.ConstraintViolation;
 
+import javax.validation.ConstraintViolationException;
+
 import java.util.Set;
+import java.util.logging.Logger;
 
 import static md.dbalutsel.bookstore.data.Constants.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {TestConfig.class, TestDataConfig.class})
+@ContextConfiguration(classes = {TestConfig.class, TestDataConfig.class, TestSecurityConfig.class})
 public class BookFieldsValidationTest {
 
     @Autowired
@@ -48,7 +53,7 @@ public class BookFieldsValidationTest {
 
     @Test
     public void ShouldPassAllValidations() {
-        book.setName(ALLOWED_NAME);
+        book.setName(ALLOWED_NAME+"1");
         book.setYear(ALLOWED_YEAR);
         book.setAuthor(ALLOWED_AUTHOR);
         book.setGenre(ALLOWED_GENRE);
