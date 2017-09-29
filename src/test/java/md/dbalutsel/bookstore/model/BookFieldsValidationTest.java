@@ -3,6 +3,7 @@ package md.dbalutsel.bookstore.model;
 import md.dbalutsel.bookstore.config.TestConfig;
 import md.dbalutsel.bookstore.config.TestDataConfig;
 import md.dbalutsel.bookstore.config.TestSecurityConfig;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import javax.validation.ConstraintViolation;
+
 import javax.validation.ConstraintViolationException;
 
 import java.util.Set;

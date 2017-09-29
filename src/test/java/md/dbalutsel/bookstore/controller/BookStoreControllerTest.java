@@ -3,10 +3,12 @@ package md.dbalutsel.bookstore.controller;
 import com.google.gson.Gson;
 import md.dbalutsel.bookstore.config.TestConfig;
 import md.dbalutsel.bookstore.config.TestDataConfig;
+
 import md.dbalutsel.bookstore.config.TestSecurityConfig;
 import md.dbalutsel.bookstore.model.Book;
 import md.dbalutsel.bookstore.service.BookService;
 import md.dbalutsel.bookstore.service.UserService;
+
 import org.hibernate.HibernateException;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,7 +45,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class BookStoreControllerTest {
 
     private MockMvc mockMvc;
-
+  
     @InjectMocks
     private BookStoreController bookStoreController;
 
@@ -316,7 +318,7 @@ public class BookStoreControllerTest {
         verify(bookService, times(1)).findAll();
         verifyNoMoreInteractions(bookService);
     }
-
+  
     @Test
     public void findAllUserBooksTest() throws Exception {
         when(principal.getName()).thenReturn(ALLOWED_USERNAME);

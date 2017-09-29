@@ -2,6 +2,7 @@ package md.dbalutsel.bookstore.model;
 
 import md.dbalutsel.bookstore.model.validators.Unique;
 import org.hibernate.annotations.Proxy;
+
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;

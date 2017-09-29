@@ -25,7 +25,7 @@ public class DataExceptionHandler {
     public ResponseEntity<String> noResultExceptionHandler() {
         return new ResponseEntity<>(NO_DATA_MSG, NOT_FOUND);
     }
-
+  
     @ExceptionHandler(PersistenceException.class)
     public ResponseEntity<String> persistenceExceptionHandler(PersistenceException ex) {
         return new ResponseEntity<>(HIBERNATE_ERROR_MSG, INTERNAL_SERVER_ERROR);
