@@ -13,6 +13,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.persistence.NoResultException;
+import javax.validation.ConstraintViolationException;
 import java.util.List;
 import java.util.Objects;
 
@@ -34,7 +35,13 @@ public class UserServiceTest {
 
     @Test
     public void saveUserTest() {
-        User user = new User(ALLOWED_USERNAME,ALLOWED_PASSWORD, ALLOWED_EMAIL);
+        User user = new User(ALLOWED_USERNAME+"1", ALLOWED_PASSWORD, "a"+ALLOWED_EMAIL);
+        userService.save(user);
+    }
+
+    @Test(expected = ConstraintViolationException.class)
+    public void ShouldFailToSaveUserBecauseOfUniqueConstraintViolationTest() {
+        User user = new User(ALLOWED_USERNAME, ALLOWED_PASSWORD, ALLOWED_EMAIL);
         userService.save(user);
     }
 

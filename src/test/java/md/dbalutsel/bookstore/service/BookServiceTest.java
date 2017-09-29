@@ -14,6 +14,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.persistence.NoResultException;
+import javax.validation.ConstraintViolationException;
 import java.rmi.NoSuchObjectException;
 import java.util.List;
 import java.util.Objects;
@@ -91,6 +92,12 @@ public class BookServiceTest {
 
     @Test
     public void saveTest() {
+        Book bookToSave = new Book(ALLOWED_NAME+ALLOWED_NAME, ALLOWED_AUTHOR, ALLOWED_YEAR, ALLOWED_GENRE);
+        bookService.save(bookToSave);
+    }
+
+    @Test(expected = ConstraintViolationException.class)
+    public void ShouldFailToSaveBecauseOfUniqueConstraintViolation() {
         Book bookToSave = new Book(ALLOWED_NAME, ALLOWED_AUTHOR, ALLOWED_YEAR, ALLOWED_GENRE);
         bookService.save(bookToSave);
     }

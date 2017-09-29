@@ -12,6 +12,7 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import javax.validation.ConstraintViolation;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import static md.dbalutsel.bookstore.data.Constants.*;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -47,9 +48,9 @@ public class UserFieldsValidationTest {
 
     @Test
     public void ShouldPassAllValidations() {
-        user.setUsername(ALLOWED_USERNAME);
+        user.setUsername(ALLOWED_USERNAME+"1");
         user.setPassword(ALLOWED_PASSWORD);
-        user.setEmail(ALLOWED_EMAIL);
+        user.setEmail("a"+ALLOWED_EMAIL);
         Set<ConstraintViolation<User>> violations = validator.validate(user);
         assertThat("Passed all validations!", violations, hasSize(0));
     }

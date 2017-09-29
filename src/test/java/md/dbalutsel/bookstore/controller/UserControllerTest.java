@@ -55,9 +55,9 @@ public class UserControllerTest {
         role.setId(ALLOWED_ID);
         role.setName(USER_ROLE);
 
-        user.setUsername(ALLOWED_USERNAME);
+        user.setUsername(ALLOWED_USERNAME+"1");
         user.setPassword(ALLOWED_PASSWORD);
-        user.setEmail(ALLOWED_EMAIL);
+        user.setEmail("a"+ALLOWED_EMAIL);
         user.setRoles(role);
     }
 
