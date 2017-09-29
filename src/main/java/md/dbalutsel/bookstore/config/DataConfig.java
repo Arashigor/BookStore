@@ -34,15 +34,19 @@ public class DataConfig {
 
     @Bean
     public LocalSessionFactoryBean sessionFactory() {
-        Resource config = new ClassPathResource("hibernate.cfg.xml");
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-        sessionFactory.setConfigLocation(config);
         sessionFactory.setPackagesToScan(env.getProperty("bookstore.entity.package"));
         sessionFactory.setDataSource(dataSource());
 
-        Properties customValidator = new Properties();
-        customValidator.put("javax.persistence.validation.factory", validator());
-        sessionFactory.setHibernateProperties(customValidator);
+        Properties hibernateProperties = new Properties();
+        hibernateProperties.setProperty("hibernate.dialect", env.getProperty("hibernate.dialect"));
+        hibernateProperties.setProperty("hibernate.cache.provider_class", env.getProperty("hibernate.cache.provider_class"));
+        hibernateProperties.setProperty("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
+        hibernateProperties.setProperty("hibernate.format_sql", env.getProperty("hibernate.format_sql"));
+        hibernateProperties.setProperty("hibernate.implicit_naming_strategy", env.getProperty("hibernate.implicit_naming_strategy"));
+        hibernateProperties.setProperty("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
+        hibernateProperties.put("javax.persistence.validation.factory", validator());
+        sessionFactory.setHibernateProperties(hibernateProperties);
 
         return sessionFactory;
     }

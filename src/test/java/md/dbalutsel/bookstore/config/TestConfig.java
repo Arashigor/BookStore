@@ -10,14 +10,9 @@ import md.dbalutsel.bookstore.service.UserService;
 import md.dbalutsel.bookstore.service.UserServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 @Configuration
 public class TestConfig {
-    @Bean
-    public LocalValidatorFactoryBean validator() {
-        return new LocalValidatorFactoryBean();
-    }
 
     @Bean
     public Book book() {
