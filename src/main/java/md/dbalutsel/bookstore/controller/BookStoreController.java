@@ -73,11 +73,4 @@ public class BookStoreController {
         return (bookService.delete(id)==1) ? new ResponseEntity<>(NO_CONTENT)
                 : new ResponseEntity<>(NO_DATA_MSG, NOT_FOUND);
     }
-
-    @PreAuthorize("hasAnyRole('USER, ADMIN')")
-    @GetMapping("/books/my")
-    public ResponseEntity<?> findUserBooks(Principal principal) {
-        List<Book> books = userService.findAllUserBooks(principal.getName());
-        return (books.isEmpty()) ? new ResponseEntity<>(NO_DATA_MSG, NOT_FOUND) : new ResponseEntity<>(books, OK);
-    }
 }

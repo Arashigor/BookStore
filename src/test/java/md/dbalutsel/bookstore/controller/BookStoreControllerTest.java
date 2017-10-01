@@ -7,9 +7,7 @@ import md.dbalutsel.bookstore.config.TestDataConfig;
 import md.dbalutsel.bookstore.config.TestSecurityConfig;
 import md.dbalutsel.bookstore.model.Book;
 import md.dbalutsel.bookstore.service.BookService;
-import md.dbalutsel.bookstore.service.UserService;
 
-import org.hibernate.HibernateException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,8 +23,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.util.NestedServletException;
 
 import javax.persistence.NoResultException;
+import javax.persistence.PersistenceException;
 import java.rmi.NoSuchObjectException;
-import java.security.Principal;
 import java.util.Collections;
 
 import static md.dbalutsel.bookstore.data.Constants.*;
@@ -35,7 +33,6 @@ import static org.mockito.Mockito.*;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -50,13 +47,7 @@ public class BookStoreControllerTest {
     private BookStoreController bookStoreController;
 
     @Mock
-    private Principal principal;
-
-    @Mock
     private BookService bookService;
-
-    @Mock
-    private UserService userService;
 
     @Autowired
     private Book book;
@@ -308,7 +299,7 @@ public class BookStoreControllerTest {
     public void databaseExceptionTest() throws Exception {
         when(bookService.delete(WRONG_ID)).thenReturn(0);
 
-        when(bookService.findAll()).thenThrow(new HibernateException("Something wrong with db!"));
+        when(bookService.findAll()).thenThrow(new PersistenceException("Something wrong with db!"));
 
         mockMvc.perform(get("/books"))
                 .andDo(print())
@@ -317,21 +308,5 @@ public class BookStoreControllerTest {
 
         verify(bookService, times(1)).findAll();
         verifyNoMoreInteractions(bookService);
-    }
-  
-    @Test
-    public void findAllUserBooksTest() throws Exception {
-        when(principal.getName()).thenReturn(ALLOWED_USERNAME);
-        when(userService.findAllUserBooks(ALLOWED_USERNAME)).thenReturn(Collections.emptyList());
-
-        mockMvc.perform(get("/books/my").principal(principal)
-                        .with(httpBasic(ALLOWED_USERNAME, ALLOWED_PASSWORD)))
-                .andExpect(status().isNotFound())
-                .andReturn();
-
-        verify(principal, times(2)).getName();
-        verifyNoMoreInteractions(principal);
-        verify(userService, times(1)).findAllUserBooks(ALLOWED_USERNAME);
-        verifyNoMoreInteractions(userService);
     }
 }

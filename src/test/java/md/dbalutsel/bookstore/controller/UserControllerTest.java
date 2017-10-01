@@ -20,9 +20,14 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.security.Principal;
+import java.util.Collections;
+
 import static md.dbalutsel.bookstore.data.Constants.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -38,6 +43,9 @@ public class UserControllerTest {
 
     @Mock
     private UserService userService;
+
+    @Mock
+    private Principal principal;
 
     @Autowired
     private User user;
@@ -59,6 +67,22 @@ public class UserControllerTest {
         user.setPassword(ALLOWED_PASSWORD);
         user.setEmail("a"+ALLOWED_EMAIL);
         user.setRoles(role);
+    }
+
+    @Test
+    public void findAllUserBooksTest() throws Exception {
+        when(principal.getName()).thenReturn(ALLOWED_USERNAME);
+        when(userService.findAllUserBooks(ALLOWED_USERNAME)).thenReturn(Collections.emptyList());
+
+        mockMvc.perform(get("/users/books").principal(principal)
+                .with(httpBasic(ALLOWED_USERNAME, ALLOWED_PASSWORD)))
+                .andExpect(status().isNotFound())
+                .andReturn();
+
+        verify(principal, times(2)).getName();
+        verifyNoMoreInteractions(principal);
+        verify(userService, times(1)).findAllUserBooks(ALLOWED_USERNAME);
+        verifyNoMoreInteractions(userService);
     }
 
     @Test
